@@ -1,9 +1,8 @@
 package com.tqs1.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tqs1.api.model.SimpleAirQuality;
+import com.tqs1.api.model.AirQuality;
 import org.apache.http.client.utils.URIBuilder;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,23 +17,29 @@ public class BreezometerService {
     @Value("${breezometer.token}")
     private String breezometer_token;
 
+    @Value("${breezometer.all_features}")
+    private String breezometer_all_features;
+
     private final HttpClient httpClient = new HttpBasic();
     private URIBuilder uriBuilder;
 
-    public SimpleAirQuality request_api(BreezometerEndpoints endpoint, double latitude, double longitude)
+    public AirQuality request_api(BreezometerEndpoints endpoint, double latitude, double longitude)
             throws URISyntaxException, IOException, ParseException {
 
         uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
         uriBuilder.addParameter("lat", String.valueOf(latitude));
         uriBuilder.addParameter("lon", String.valueOf(longitude));
         uriBuilder.addParameter("key", breezometer_token);
+        uriBuilder.addParameter("features", breezometer_all_features);
 
         String response = httpClient.get(uriBuilder.build().toString());
+
+        System.out.println(uriBuilder.build().toString());
 
         // get parts from response till reaching the address
         try {
             // JSONObjectStrategy jsonObjectStrategy = new JSONObjectStrategy((JSONObject) new JSONParser().parse(response));
-            return new ObjectMapper().readValue(response, SimpleAirQuality.class);
+            return new ObjectMapper().readValue(response, AirQuality.class);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchFieldError();
         }
