@@ -13,6 +13,8 @@ import java.io.IOException;
 
 public class AirQualityDeserializer extends StdDeserializer<SimpleAirQuality> {
 
+    private static final long serialVersionUID = 6106269076155338045L;
+
     protected AirQualityDeserializer(Class<?> vc) {
         super(vc);
     }
@@ -24,6 +26,12 @@ public class AirQualityDeserializer extends StdDeserializer<SimpleAirQuality> {
     @Override
     public SimpleAirQuality deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException, JsonProcessingException {
+
+
+        int ola[] = {1};
+        if (ola.length < 0){
+            //
+        }
 
         JsonNode main_node = jsonParser.getCodec().readTree(jsonParser);
         JsonNode air_quality_node = main_node.get("data").get("indexes").get("baqi");

@@ -25,7 +25,7 @@ public class BreezometerService {
             throws URISyntaxException, IOException, ParseException {
 
         uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
-        uriBuilder.addParameter("lat", String.valueOf(latitude));<
+        uriBuilder.addParameter("lat", String.valueOf(latitude));
         uriBuilder.addParameter("lon", String.valueOf(longitude));
         uriBuilder.addParameter("key", breezometer_token);
 
