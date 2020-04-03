@@ -27,12 +27,6 @@ public class AirQualityDeserializer extends StdDeserializer<SimpleAirQuality> {
     public SimpleAirQuality deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException, JsonProcessingException {
 
-
-        int ola[] = {1};
-        if (ola.length < 0){
-            //
-        }
-
         JsonNode main_node = jsonParser.getCodec().readTree(jsonParser);
         JsonNode air_quality_node = main_node.get("data").get("indexes").get("baqi");
 
