@@ -6,9 +6,13 @@ public class Pollutant extends SimpleAirQuality {
     private String full_name;
     private PollutantConcentration concentration;
 
-    public Pollutant(String dominant_pollutant, String air_quality_color, String air_quality_category,
-                     int air_quality_score) {
-        super(dominant_pollutant, air_quality_color, air_quality_category, air_quality_score);
+    public Pollutant(String simple_name, String full_name, String air_quality_color, String air_quality_category,
+                     int air_quality_score, PollutantConcentration concentration) {
+        super(air_quality_color, air_quality_category, air_quality_score);
+
+        this.simple_name = simple_name;
+        this.full_name = full_name;
+        this.concentration = concentration;
     }
 
     public String getSimple_name() {

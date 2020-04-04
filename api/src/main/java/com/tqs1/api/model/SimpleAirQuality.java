@@ -6,23 +6,18 @@ import com.tqs1.api.serializers.AirQualityDeserializer;
 
 public abstract class SimpleAirQuality {
 
-    private String dominant_pollutant,
-                    air_quality_color,
-                    air_quality_category;
+    private String air_quality_color,
+            air_quality_category;
     private int air_quality_score;
 
 
-    public SimpleAirQuality(String dominant_pollutant, String air_quality_color, String air_quality_category,
+    public SimpleAirQuality(String air_quality_color, String air_quality_category,
                               int air_quality_score) {
-        this.dominant_pollutant = dominant_pollutant;
         this.air_quality_color = air_quality_color;
         this.air_quality_category = air_quality_category;
         this.air_quality_score = air_quality_score;
     }
 
-    public String getDominant_pollutant() {
-        return dominant_pollutant;
-    }
 
     public String getAir_quality_color() {
         return air_quality_color;
