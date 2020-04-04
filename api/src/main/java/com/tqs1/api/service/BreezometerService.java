@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 @Service
 public class BreezometerService {
@@ -34,11 +35,8 @@ public class BreezometerService {
 
         String response = httpClient.get(uriBuilder.build().toString());
 
-        System.out.println(uriBuilder.build().toString());
-
         // get parts from response till reaching the address
         try {
-            // JSONObjectStrategy jsonObjectStrategy = new JSONObjectStrategy((JSONObject) new JSONParser().parse(response));
             return new ObjectMapper().readValue(response, AirQuality.class);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchFieldError();
