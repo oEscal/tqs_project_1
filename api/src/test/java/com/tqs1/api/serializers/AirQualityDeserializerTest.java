@@ -14,10 +14,10 @@ class AirQualityDeserializerTest {
     @Test
     void testDeserialize() throws JsonProcessingException {
 
-        String expected_color = "#96D62B",
-                expected_category = "Good air quality",
-                expected_pollutant = "03";
-        int expected_score = 67;
+        String expectedColor = "#96D62B",
+                expectedCategory = "Good air quality",
+                expectedPollutant = "03";
+        int expectedScore = 67;
 
         String json = "{" +
                 "\"data\": {\n" +
@@ -26,20 +26,20 @@ class AirQualityDeserializerTest {
                 "        \"indexes\": {\n" +
                 "            \"baqi\": {\n" +
                 "                \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                \"aqi\": " + expected_score + ",\n" +
-                "                \"aqi_display\": \"" + expected_score + "\",\n" +
-                "                \"color\": \"" + expected_color + "\",\n" +
-                "                \"category\": \"" + expected_category + "\",\n" +
-                "                \"dominant_pollutant\": \"" + expected_pollutant + "\"\n" +
+                "                \"aqi\": " + expectedScore + ",\n" +
+                "                \"aqi_display\": \"" + expectedScore + "\",\n" +
+                "                \"color\": \"" + expectedColor + "\",\n" +
+                "                \"category\": \"" + expectedCategory + "\",\n" +
+                "                \"dominant_pollutant\": \"" + expectedPollutant + "\"\n" +
                 "            }" +
                 "        }" +
                 "       }" +
                 "}";
 
-        AirQuality expected_air_quality = new AirQuality(expected_pollutant, expected_color, expected_category,
-                expected_score);
-        AirQuality obtained_air_quality = new ObjectMapper().readValue(json, AirQuality.class);
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant, expectedColor, expectedCategory,
+                expectedScore);
+        AirQuality obtainedAirQuality = new ObjectMapper().readValue(json, AirQuality.class);
 
-        assertThat(obtained_air_quality, is(expected_air_quality));
+        assertThat(obtainedAirQuality, is(expectedAirQuality));
     }
 }
