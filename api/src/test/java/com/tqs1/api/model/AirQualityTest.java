@@ -77,4 +77,12 @@ class AirQualityTest {
         assertThat(pollutants_added, hasItem(pollutant1));
         assertThat(pollutants_added, hasItem(pollutant2));
     }
+
+    @Test
+    void testEquals() {
+        AirQuality expected_air_quality = new AirQuality(dominant_pollutant, air_quality_color, air_quality_category,
+                air_quality_score);
+
+        assertThat(airQuality, is(expected_air_quality));
+    }
 }
