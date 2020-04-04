@@ -13,6 +13,8 @@ import java.io.IOException;
 
 public abstract class SimpleAirQualityDeserializer extends StdDeserializer<AirQuality> {
 
+    private static final long serialVersionUID = 6106269076155338045L;
+
     protected SimpleAirQualityDeserializer(Class<?> vc) {
         super(vc);
     }
