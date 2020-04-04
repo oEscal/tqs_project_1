@@ -18,8 +18,8 @@ class PollutantConcentrationDeserializerTest {
         double expectedValue = 41.46;
 
         String json = "{\n" +
-                "                    \"value\": 41.46,\n" +
-                "                    \"units\": \"ppb\"\n" +
+                "                    \"value\": " + expectedValue + ",\n" +
+                "                    \"units\": \"" + expectedUnits + "\"\n" +
                 "                }";
 
         PollutantConcentration expectedPollutantConcentration = new PollutantConcentration(expectedValue, expectedUnits);

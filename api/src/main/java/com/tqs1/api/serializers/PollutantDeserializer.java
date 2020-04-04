@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
-import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Pollutant;
 import com.tqs1.api.model.PollutantConcentration;
 

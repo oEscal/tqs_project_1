@@ -54,4 +54,12 @@ class PollutantTest {
     void testGetAir_quality_score() {
         assertThat(pollutant.getAirQualityScore(), is(scoreTest));
     }
+
+    @Test
+    void testEquals() {
+        Pollutant expectedPollutant = new Pollutant(simpleNameTest, fullNameTest, colorTest, categoryTest,
+                scoreTest, pollutantConcentration);
+
+        assertThat(pollutant, is(expectedPollutant));
+    }
 }
