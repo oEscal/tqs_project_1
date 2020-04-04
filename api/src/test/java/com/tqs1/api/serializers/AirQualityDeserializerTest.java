@@ -3,6 +3,8 @@ package com.tqs1.api.serializers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs1.api.model.AirQuality;
+import com.tqs1.api.model.Pollutant;
+import com.tqs1.api.model.PollutantConcentration;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,10 +16,21 @@ class AirQualityDeserializerTest {
     @Test
     void testDeserialize() throws JsonProcessingException {
 
+        // for air quality
         String expectedColor = "#96D62B",
                 expectedCategory = "Good air quality",
                 expectedPollutant = "03";
         int expectedScore = 67;
+
+        // for pollutants
+        String[] expectedSimpleName = {"O3", "CO"},
+                expectedFullName = {"Ozone", "Carbon monoxide"},
+                expectedPollutantColor = {"#84CF33", "#009E3A"},
+                expectedPollutantCategory = {"Good air quality", "Excellent air quality"};
+        int[] expectedPollutantScore = {67, 99};
+        String[] expectedUnits = {"ppb", "ppb"};
+        double[] expectedValue = {41.46, 171.91};
+
 
         String json = "{" +
                 "\"data\": {\n" +
@@ -35,105 +48,37 @@ class AirQualityDeserializerTest {
                 "        },\n" +
                 "        \"pollutants\": {\n" +
                 "            \"co\": {\n" +
-                "                \"display_name\": \"CO\",\n" +
-                "                \"full_name\": \"Carbon monoxide\",\n" +
+                "                \"display_name\": \"" + expectedSimpleName[0] + "\",\n" +
+                "                \"full_name\": \"" + expectedFullName[0] + "\",\n" +
                 "                \"aqi_information\": {\n" +
                 "                    \"baqi\": {\n" +
                 "                        \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                        \"aqi\": 99,\n" +
-                "                        \"aqi_display\": \"99\",\n" +
-                "                        \"color\": \"#009E3A\",\n" +
-                "                        \"category\": \"Excellent air quality\"\n" +
+                "                        \"aqi\": " + expectedPollutantScore[0] + ",\n" +
+                "                        \"aqi_display\": \"" + expectedPollutantScore[0] + "\",\n" +
+                "                        \"color\": \"" + expectedPollutantColor[0] + "\",\n" +
+                "                        \"category\": \"" + expectedPollutantCategory[0] + "\"\n" +
                 "                    }\n" +
                 "                },\n" +
                 "                \"concentration\": {\n" +
-                "                    \"value\": 171.91,\n" +
-                "                    \"units\": \"ppb\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"no2\": {\n" +
-                "                \"display_name\": \"NO2\",\n" +
-                "                \"full_name\": \"Nitrogen dioxide\",\n" +
-                "                \"aqi_information\": {\n" +
-                "                    \"baqi\": {\n" +
-                "                        \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                        \"aqi\": 98,\n" +
-                "                        \"aqi_display\": \"98\",\n" +
-                "                        \"color\": \"#009E3A\",\n" +
-                "                        \"category\": \"Excellent air quality\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"concentration\": {\n" +
-                "                    \"value\": 2.6,\n" +
-                "                    \"units\": \"ppb\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"o3\": {\n" +
-                "                \"display_name\": \"O3\",\n" +
-                "                \"full_name\": \"Ozone\",\n" +
-                "                \"aqi_information\": {\n" +
-                "                    \"baqi\": {\n" +
-                "                        \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                        \"aqi\": 67,\n" +
-                "                        \"aqi_display\": \"67\",\n" +
-                "                        \"color\": \"#84CF33\",\n" +
-                "                        \"category\": \"Good air quality\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"concentration\": {\n" +
-                "                    \"value\": 41.68,\n" +
-                "                    \"units\": \"ppb\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"pm10\": {\n" +
-                "                \"display_name\": \"PM10\",\n" +
-                "                \"full_name\": \"Inhalable particulate matter (<10µm)\",\n" +
-                "                \"aqi_information\": {\n" +
-                "                    \"baqi\": {\n" +
-                "                        \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                        \"aqi\": 90,\n" +
-                "                        \"aqi_display\": \"90\",\n" +
-                "                        \"color\": \"#009E3A\",\n" +
-                "                        \"category\": \"Excellent air quality\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"concentration\": {\n" +
-                "                    \"value\": 11.12,\n" +
-                "                    \"units\": \"ug/m3\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"pm25\": {\n" +
-                "                \"display_name\": \"PM2.5\",\n" +
-                "                \"full_name\": \"Fine particulate matter (<2.5µm)\",\n" +
-                "                \"aqi_information\": {\n" +
-                "                    \"baqi\": {\n" +
-                "                        \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                        \"aqi\": 91,\n" +
-                "                        \"aqi_display\": \"91\",\n" +
-                "                        \"color\": \"#009E3A\",\n" +
-                "                        \"category\": \"Excellent air quality\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"concentration\": {\n" +
-                "                    \"value\": 5.73,\n" +
-                "                    \"units\": \"ug/m3\"\n" +
+                "                    \"value\": " + expectedValue[0] + ",\n" +
+                "                    \"units\": \"" + expectedUnits[0] + "\"\n" +
                 "                }\n" +
                 "            },\n" +
                 "            \"so2\": {\n" +
-                "                \"display_name\": \"SO2\",\n" +
-                "                \"full_name\": \"Sulfur dioxide\",\n" +
+                "                \"display_name\": \"" + expectedSimpleName[1] + "\",\n" +
+                "                \"full_name\": \"" + expectedFullName[1] + "\",\n" +
                 "                \"aqi_information\": {\n" +
                 "                    \"baqi\": {\n" +
                 "                        \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                        \"aqi\": 99,\n" +
-                "                        \"aqi_display\": \"99\",\n" +
-                "                        \"color\": \"#009E3A\",\n" +
-                "                        \"category\": \"Excellent air quality\"\n" +
+                "                        \"aqi\": " + expectedPollutantScore[1] + ",\n" +
+                "                        \"aqi_display\": \"" + expectedPollutantScore[1] + "\",\n" +
+                "                        \"color\": \"" + expectedPollutantColor[1] + "\",\n" +
+                "                        \"category\": \"" + expectedPollutantCategory[1] + "\"\n" +
                 "                    }\n" +
                 "                },\n" +
                 "                \"concentration\": {\n" +
-                "                    \"value\": 1.84,\n" +
-                "                    \"units\": \"ppb\"\n" +
+                "                    \"value\": " + expectedValue[1] + ",\n" +
+                "                    \"units\": \"" + expectedUnits[1] + "\"\n" +
                 "                }\n" +
                 "            }\n" +
                 "        }" +
@@ -142,6 +87,14 @@ class AirQualityDeserializerTest {
 
         AirQuality expectedAirQuality = new AirQuality(expectedPollutant, expectedColor, expectedCategory,
                 expectedScore);
+
+        expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
+                expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
+                new PollutantConcentration(expectedValue[0], expectedUnits[0])));
+        expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[1], expectedFullName[1],
+                expectedPollutantColor[1], expectedPollutantCategory[1], expectedPollutantScore[1],
+                new PollutantConcentration(expectedValue[1], expectedUnits[1])));
+
         AirQuality obtained_air_quality = new ObjectMapper().readValue(json, AirQuality.class);
 
         assertThat(obtained_air_quality, is(expectedAirQuality));
