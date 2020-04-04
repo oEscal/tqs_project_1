@@ -11,21 +11,28 @@ class PollutantConcentrationTest {
 
     private PollutantConcentration pollutantConcentration;
 
-    private double test_value = 0.6;
-    private String test_unit = "test_unit";
+    private double testValue = 0.6;
+    private String testUnit = "test_unit";
 
     @BeforeEach
     void setupNewConcentration() {
-        pollutantConcentration = new PollutantConcentration(test_value, test_unit);
+        pollutantConcentration = new PollutantConcentration(testValue, testUnit);
     }
 
     @Test
     void testGetValue() {
-        assertThat(pollutantConcentration.getValue(), is(test_value));
+        assertThat(pollutantConcentration.getValue(), is(testValue));
     }
 
     @Test
     void testGetUnits() {
-        assertThat(pollutantConcentration.getUnits(), is(test_unit));
+        assertThat(pollutantConcentration.getUnits(), is(testUnit));
+    }
+
+    @Test
+    void testEquals() {
+        PollutantConcentration expectedPollutantConcentration = new PollutantConcentration(testValue, testUnit);
+
+        assertThat(pollutantConcentration, is(expectedPollutantConcentration));
     }
 }

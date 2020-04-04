@@ -12,34 +12,34 @@ import static org.hamcrest.Matchers.*;
 class AirQualityTest {
 
     private AirQuality airQuality;
-    private String dominant_pollutant = "dominant_pollutant_test",
-            air_quality_color = "color_test",
-            air_quality_category = "category_test";
-    private int air_quality_score = 38;
+    private String dominantPollutantTest = "dominant_pollutant_test",
+            colorTest = "color_test",
+            categoryTest = "category_test";
+    private int scoreTest = 38;
 
     @BeforeEach
     void setUp() {
-        this.airQuality = new AirQuality(dominant_pollutant, air_quality_color, air_quality_category, air_quality_score);
+        this.airQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest, scoreTest);
     }
 
     @Test
     void getAir_quality_color() {
-        assertThat(airQuality.getAir_quality_color(), is(air_quality_color));
+        assertThat(airQuality.getAir_quality_color(), is(colorTest));
     }
 
     @Test
     void getAir_quality_category() {
-        assertThat(airQuality.getAir_quality_category(), is(air_quality_category));
+        assertThat(airQuality.getAir_quality_category(), is(categoryTest));
     }
 
     @Test
     void getAir_quality_score() {
-        assertThat(airQuality.getAir_quality_score(), is(air_quality_score));
+        assertThat(airQuality.getAir_quality_score(), is(scoreTest));
     }
 
     @Test
     void getDominant_pollutant() {
-        assertThat(airQuality.getDominant_pollutant(), is(dominant_pollutant));
+        assertThat(airQuality.getDominant_pollutant(), is(dominantPollutantTest));
     }
 
     @Test
@@ -73,16 +73,16 @@ class AirQualityTest {
         this.airQuality.addPollutant(pollutant1);
         this.airQuality.addPollutant(pollutant2);
 
-        List<Pollutant> pollutants_added = airQuality.getPollutants();
-        assertThat(pollutants_added, hasItem(pollutant1));
-        assertThat(pollutants_added, hasItem(pollutant2));
+        List<Pollutant> pollutants = airQuality.getPollutants();
+        assertThat(pollutants, hasItem(pollutant1));
+        assertThat(pollutants, hasItem(pollutant2));
     }
 
     @Test
     void testEquals() {
-        AirQuality expected_air_quality = new AirQuality(dominant_pollutant, air_quality_color, air_quality_category,
-                air_quality_score);
+        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+                scoreTest);
 
-        assertThat(airQuality, is(expected_air_quality));
+        assertThat(airQuality, is(expectedAirQuality));
     }
 }
