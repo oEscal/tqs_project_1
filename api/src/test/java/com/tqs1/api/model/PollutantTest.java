@@ -11,28 +11,28 @@ class PollutantTest {
 
     private Pollutant pollutant;
 
-    private String simple_name = "simple_name_test",
-            full_name = "full_name_test",
-            air_quality_color = "color_test",
-            air_quality_category = "category_test";
-    private int air_quality_score = 38;
+    private String simpleNameTest = "simple_name_test",
+            fullNameTest = "full_name_test",
+            colorTest = "color_test",
+            categoryTest = "category_test";
+    private int scoreTest = 38;
     private PollutantConcentration pollutantConcentration = new PollutantConcentration(10.59, "unit_test");
 
 
     @BeforeEach
     void setupPollutant() {
-        this.pollutant = new Pollutant(simple_name, full_name, air_quality_color, air_quality_category,
-                air_quality_score, pollutantConcentration);
+        this.pollutant = new Pollutant(simpleNameTest, fullNameTest, colorTest, categoryTest,
+                scoreTest, pollutantConcentration);
     }
 
     @Test
     void testGetSimple_name() {
-        assertThat(pollutant.getSimple_name(), is(simple_name));
+        assertThat(pollutant.getSimpleName(), is(simpleNameTest));
     }
 
     @Test
     void testGetFull_name() {
-        assertThat(pollutant.getFull_name(), is(full_name));
+        assertThat(pollutant.getFullName(), is(fullNameTest));
     }
 
     @Test
@@ -42,16 +42,16 @@ class PollutantTest {
 
     @Test
     void testGetAir_quality_category() {
-        assertThat(pollutant.getAir_quality_category(), is(air_quality_category));
+        assertThat(pollutant.getAirQualityCategory(), is(categoryTest));
     }
 
     @Test
     void testGetAir_quality_color() {
-        assertThat(pollutant.getAir_quality_color(), is(air_quality_color));
+        assertThat(pollutant.getAirQualityColor(), is(colorTest));
     }
 
     @Test
     void testGetAir_quality_score() {
-        assertThat(pollutant.getAir_quality_score(), is(air_quality_score));
+        assertThat(pollutant.getAirQualityScore(), is(scoreTest));
     }
 }

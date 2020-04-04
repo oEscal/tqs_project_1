@@ -24,22 +24,22 @@ class AirQualityTest {
 
     @Test
     void getAir_quality_color() {
-        assertThat(airQuality.getAir_quality_color(), is(colorTest));
+        assertThat(airQuality.getAirQualityColor(), is(colorTest));
     }
 
     @Test
     void getAir_quality_category() {
-        assertThat(airQuality.getAir_quality_category(), is(categoryTest));
+        assertThat(airQuality.getAirQualityCategory(), is(categoryTest));
     }
 
     @Test
     void getAir_quality_score() {
-        assertThat(airQuality.getAir_quality_score(), is(scoreTest));
+        assertThat(airQuality.getAirQualityScore(), is(scoreTest));
     }
 
     @Test
     void getDominant_pollutant() {
-        assertThat(airQuality.getDominant_pollutant(), is(dominantPollutantTest));
+        assertThat(airQuality.getDominantPollutant(), is(dominantPollutantTest));
     }
 
     @Test

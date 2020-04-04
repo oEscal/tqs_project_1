@@ -1,37 +1,34 @@
 package com.tqs1.api.model;
 
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.tqs1.api.serializers.AirQualityDeserializer;
-
 import java.util.Objects;
+
 
 public abstract class SimpleAirQuality {
 
-    private String air_quality_color,
-            air_quality_category;
-    private int air_quality_score;
+    private String airQualityColor;
+    private String airQualityCategory;
+    private int airQualityScore;
 
 
-    public SimpleAirQuality(String air_quality_color, String air_quality_category,
-                              int air_quality_score) {
+    public SimpleAirQuality(String airQualityColor, String airQualityCategory,
+                            int airQualityScore) {
 
-        this.air_quality_color = air_quality_color;
-        this.air_quality_category = air_quality_category;
-        this.air_quality_score = air_quality_score;
+        this.airQualityColor = airQualityColor;
+        this.airQualityCategory = airQualityCategory;
+        this.airQualityScore = airQualityScore;
     }
 
 
-    public String getAir_quality_color() {
-        return air_quality_color;
+    public String getAirQualityColor() {
+        return airQualityColor;
     }
 
-    public String getAir_quality_category() {
-        return air_quality_category;
+    public String getAirQualityCategory() {
+        return airQualityCategory;
     }
 
-    public int getAir_quality_score() {
-        return air_quality_score;
+    public int getAirQualityScore() {
+        return airQualityScore;
     }
 
     @Override
@@ -39,22 +36,22 @@ public abstract class SimpleAirQuality {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SimpleAirQuality that = (SimpleAirQuality) o;
-        return getAir_quality_score() == that.getAir_quality_score() &&
-                Objects.equals(getAir_quality_color(), that.getAir_quality_color()) &&
-                Objects.equals(getAir_quality_category(), that.getAir_quality_category());
+        return getAirQualityScore() == that.getAirQualityScore() &&
+                Objects.equals(getAirQualityColor(), that.getAirQualityColor()) &&
+                Objects.equals(getAirQualityCategory(), that.getAirQualityCategory());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAir_quality_color(), getAir_quality_category(), getAir_quality_score());
+        return Objects.hash(getAirQualityColor(), getAirQualityCategory(), getAirQualityScore());
     }
 
     @Override
     public String toString() {
         return "SimpleAirQuality{" +
-                "air_quality_color='" + air_quality_color + '\'' +
-                ", air_quality_category='" + air_quality_category + '\'' +
-                ", air_quality_score=" + air_quality_score +
+                "air_quality_color='" + airQualityColor + '\'' +
+                ", air_quality_category='" + airQualityCategory + '\'' +
+                ", air_quality_score=" + airQualityScore +
                 '}';
     }
 }

@@ -1,7 +1,6 @@
 package com.tqs1.api.serializers;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -26,7 +25,7 @@ public class PollutantConcentrationDeserializer extends StdDeserializer<Pollutan
 
     @Override
     public PollutantConcentration deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException, JsonProcessingException {
+            throws IOException {
 
         JsonNode mainNode = jsonParser.getCodec().readTree(jsonParser);
 

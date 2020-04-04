@@ -11,14 +11,14 @@ import java.util.Objects;
 @JsonDeserialize(using = AirQualityDeserializer.class)
 public class AirQuality extends SimpleAirQuality {
 
-    private String dominant_pollutant;
+    private String dominantPollutant;
     private List<Pollutant> pollutants;
 
-    public AirQuality(String dominant_pollutant, String air_quality_color, String air_quality_category,
-                      int air_quality_score) {
-        super(air_quality_color, air_quality_category, air_quality_score);
+    public AirQuality(String dominantPollutant, String airQualityColor, String airQualityCategory,
+                      int airQualityScore) {
+        super(airQualityColor, airQualityCategory, airQualityScore);
 
-        this.dominant_pollutant = dominant_pollutant;
+        this.dominantPollutant = dominantPollutant;
         this.pollutants = new ArrayList<>();
     }
 
@@ -30,8 +30,8 @@ public class AirQuality extends SimpleAirQuality {
         return pollutants;
     }
 
-    public String getDominant_pollutant() {
-        return dominant_pollutant;
+    public String getDominantPollutant() {
+        return dominantPollutant;
     }
 
     @Override
@@ -40,19 +40,19 @@ public class AirQuality extends SimpleAirQuality {
         if (!(o instanceof AirQuality)) return false;
         if (!super.equals(o)) return false;
         AirQuality that = (AirQuality) o;
-        return Objects.equals(getDominant_pollutant(), that.getDominant_pollutant()) &&
+        return Objects.equals(getDominantPollutant(), that.getDominantPollutant()) &&
                 Objects.equals(getPollutants(), that.getPollutants());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getDominant_pollutant(), getPollutants());
+        return Objects.hash(super.hashCode(), getDominantPollutant(), getPollutants());
     }
 
     @Override
     public String toString() {
         return "AirQuality{" +
-                "dominant_pollutant='" + dominant_pollutant + '\'' +
+                "dominant_pollutant='" + dominantPollutant + '\'' +
                 ", pollutants=" + pollutants +
                 "} " + super.toString();
     }

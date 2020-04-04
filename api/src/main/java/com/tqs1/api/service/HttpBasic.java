@@ -16,13 +16,9 @@ public class HttpBasic implements HttpClient {
     public String get(String url) throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
-        CloseableHttpResponse response = client.execute(request);
-        try {
+        try (CloseableHttpResponse response = client.execute(request)) {
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity);
-        } finally {
-            if( response != null)
-                response.close();
         }
     }
 }

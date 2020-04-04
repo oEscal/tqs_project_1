@@ -4,34 +4,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs1.api.model.AirQuality;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.logging.Logger;
+
 
 @Service
 public class BreezometerService {
 
     @Value("${breezometer.token}")
-    private String breezometer_token;
+    private String breezometerToken;
 
     @Value("${breezometer.all_features}")
-    private String breezometer_all_features;
+    private String breezometerAllFeatures;
 
     private final HttpClient httpClient = new HttpBasic();
-    private URIBuilder uriBuilder;
 
-    public AirQuality request_api(BreezometerEndpoints endpoint, double latitude, double longitude)
-            throws URISyntaxException, IOException, ParseException {
+    public AirQuality requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)
+            throws URISyntaxException, IOException {
 
-        uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
+        URIBuilder uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
         uriBuilder.addParameter("lat", String.valueOf(latitude));
         uriBuilder.addParameter("lon", String.valueOf(longitude));
-        uriBuilder.addParameter("key", breezometer_token);
-        uriBuilder.addParameter("features", breezometer_all_features);
+        uriBuilder.addParameter("key", breezometerToken);
+        uriBuilder.addParameter("features", breezometerAllFeatures);
 
         String response = httpClient.get(uriBuilder.build().toString());
 
