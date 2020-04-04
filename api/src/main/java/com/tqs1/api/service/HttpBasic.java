@@ -28,8 +28,6 @@ public class HttpBasic implements HttpClient {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage());
             throw new ConnectionClosedException();
-        } finally {
-            client.close();
         }
 
         try {
@@ -40,6 +38,7 @@ public class HttpBasic implements HttpClient {
             throw new ConnectionShutdownException();
         } finally {
             response.close();
+            client.close();
         }
     }
 }
