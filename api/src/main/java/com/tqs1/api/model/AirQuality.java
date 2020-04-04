@@ -45,6 +45,11 @@ public class AirQuality extends SimpleAirQuality {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getDominant_pollutant(), getPollutants());
+    }
+
+    @Override
     public String toString() {
         return "AirQuality{" +
                 "dominant_pollutant='" + dominant_pollutant + '\'' +

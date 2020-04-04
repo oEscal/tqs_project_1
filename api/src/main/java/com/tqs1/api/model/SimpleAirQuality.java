@@ -45,6 +45,11 @@ public abstract class SimpleAirQuality {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(getAir_quality_color(), getAir_quality_category(), getAir_quality_score());
+    }
+
+    @Override
     public String toString() {
         return "SimpleAirQuality{" +
                 "air_quality_color='" + air_quality_color + '\'' +

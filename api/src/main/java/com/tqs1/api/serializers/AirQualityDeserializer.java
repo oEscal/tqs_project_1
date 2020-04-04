@@ -25,14 +25,14 @@ public class AirQualityDeserializer extends StdDeserializer<AirQuality> {
     public AirQuality deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException {
 
-        JsonNode main_node = jsonParser.getCodec().readTree(jsonParser);
-        JsonNode air_quality_node = main_node.get("data").get("indexes").get("baqi");
+        JsonNode mainNode = jsonParser.getCodec().readTree(jsonParser);
+        JsonNode airQualityNode = mainNode.get("data").get("indexes").get("baqi");
 
-        String dominant_pollutant = air_quality_node.get("dominant_pollutant").textValue();
-        String air_quality_color = air_quality_node.get("color").textValue();
-        String air_quality_category = air_quality_node.get("category").textValue();
-        int air_quality_score = (Integer) ((IntNode) air_quality_node.get("aqi")).numberValue();
+        String dominantPollutant = airQualityNode.get("dominant_pollutant").textValue();
+        String airQualityColor = airQualityNode.get("color").textValue();
+        String airQualityCategory = airQualityNode.get("category").textValue();
+        int airQualityScore = (Integer) ((IntNode) airQualityNode.get("aqi")).numberValue();
 
-        return new AirQuality(dominant_pollutant, air_quality_color, air_quality_category, air_quality_score);
+        return new AirQuality(dominantPollutant, airQualityColor, airQualityCategory, airQualityScore);
     }
 }
