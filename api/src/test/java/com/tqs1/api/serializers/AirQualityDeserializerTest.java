@@ -32,8 +32,7 @@ class AirQualityDeserializerTest {
         double[] expectedValue = {41.46, 171.91};
 
 
-        String json = "{" +
-                "\"data\": {\n" +
+        String json = "{\n" +
                 "        \"datetime\": \"2020-04-04T16:00:00Z\",\n" +
                 "        \"data_available\": true,\n" +
                 "        \"indexes\": {\n" +
@@ -82,7 +81,6 @@ class AirQualityDeserializerTest {
                 "                }\n" +
                 "            }\n" +
                 "        }" +
-                "       }" +
                 "}";
 
         AirQuality expectedAirQuality = new AirQuality(expectedPollutant, expectedColor, expectedCategory,
