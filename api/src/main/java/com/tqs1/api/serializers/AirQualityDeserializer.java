@@ -29,9 +29,8 @@ public class AirQualityDeserializer extends StdDeserializer<AirQuality> {
             throws IOException {
 
         JsonNode mainNode = jsonParser.getCodec().readTree(jsonParser);
-        // JsonNode dataNode = mainNode.get("data");
 
-        JsonNode airQualityNode = mainNode.get("indexes").get("baqi");;
+        JsonNode airQualityNode = mainNode.get("indexes").get("baqi");
 
         String dominantPollutant = airQualityNode.get("dominant_pollutant").textValue();
         String airQualityColor = airQualityNode.get("color").textValue();

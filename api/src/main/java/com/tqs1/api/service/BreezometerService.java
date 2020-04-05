@@ -25,7 +25,7 @@ public class BreezometerService {
     @Value("${breezometer.all_features}")
     private String breezometerAllFeatures;
 
-    private final HttpClient httpClient = new HttpBasic();
+    private HttpClient httpClient = new HttpBasic();
 
     public List<AirQuality> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
             throws URISyntaxException, IOException, ParseException {

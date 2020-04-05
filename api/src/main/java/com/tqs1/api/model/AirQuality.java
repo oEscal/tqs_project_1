@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.tqs1.api.serializers.AirQualityDeserializer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +42,7 @@ public class AirQuality extends SimpleAirQuality {
         if (!super.equals(o)) return false;
         AirQuality that = (AirQuality) o;
         return Objects.equals(getDominantPollutant(), that.getDominantPollutant()) &&
-                Objects.equals(getPollutants(), that.getPollutants());
+                Objects.equals(new HashSet<>(getPollutants()), new HashSet<>(that.getPollutants()));
     }
 
     @Override
