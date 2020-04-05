@@ -2,6 +2,7 @@ package com.tqs1.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs1.api.model.AirQuality;
+import com.tqs1.api.model.Message;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,7 +28,7 @@ public class BreezometerService {
 
     private HttpClient httpClient = new HttpBasic();
 
-    public List<AirQuality> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
+    public Message<List<AirQuality>> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
             throws URISyntaxException, IOException, ParseException {
 
         URIBuilder uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
@@ -51,14 +52,24 @@ public class BreezometerService {
                 for (Object jsonSubData : (JSONArray) jsonData)
                     allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
 
-            return allAirQuality;
+            return new Message<>(allAirQuality, "Success obtaining the requested information", true);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchFieldError();
         }
     }
 
-    public AirQuality requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)
+    public Message<AirQuality> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)
             throws ParseException, IOException, URISyntaxException {
-        return requestApi(endpoint, latitude, longitude, 0).get(0);
+
+        Message<List<AirQuality>> originalResponse = requestApi(endpoint, latitude, longitude, 0);
+        List<AirQuality> originalAirQualityList = originalResponse.getData();
+
+        AirQuality returnAirQuality;
+        if (!originalAirQualityList.isEmpty())
+            returnAirQuality = originalAirQualityList.get(0);
+        else
+            returnAirQuality = new AirQuality();
+
+        return new Message<>(returnAirQuality, originalResponse.getDetail(), originalResponse.isSuccess());
     }
 }

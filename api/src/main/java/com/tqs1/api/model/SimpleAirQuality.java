@@ -10,6 +10,8 @@ public abstract class SimpleAirQuality {
     private int airQualityScore;
 
 
+    public SimpleAirQuality() {}
+
     public SimpleAirQuality(String airQualityColor, String airQualityCategory,
                             int airQualityScore) {
 

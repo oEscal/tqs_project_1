@@ -15,6 +15,8 @@ public class AirQuality extends SimpleAirQuality {
     private String dominantPollutant;
     private List<Pollutant> pollutants;
 
+    public AirQuality() {}
+
     public AirQuality(String dominantPollutant, String airQualityColor, String airQualityCategory,
                       int airQualityScore) {
         super(airQualityColor, airQualityCategory, airQualityScore);
