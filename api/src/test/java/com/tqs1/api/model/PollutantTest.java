@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 
 class PollutantTest {
@@ -56,10 +57,46 @@ class PollutantTest {
     }
 
     @Test
-    void testEquals() {
+    void testEqualsDifferentObjects() {
         Pollutant expectedPollutant = new Pollutant(simpleNameTest, fullNameTest, colorTest, categoryTest,
                 scoreTest, pollutantConcentration);
 
         assertThat(pollutant, is(expectedPollutant));
+    }
+
+    @Test
+    void testEqualsSameObjects() {
+        assertThat(pollutant, is(pollutant));
+    }
+
+    @Test
+    void testNotEqualsSameClassDifferentPollutantDifferentConcentration() {
+        Pollutant notExpectedPollutant = new Pollutant("simple_name2", "full_name2", "colo2",
+                "category2", 100, new PollutantConcentration(10.3, "unit2"));
+
+        assertThat(pollutant, not(notExpectedPollutant));
+    }
+
+    @Test
+    void testNotEqualsSameClassDifferentPollutantSameConcentration() {
+        Pollutant notExpectedPollutant = new Pollutant("simple_name2", "full_name2", "colo2",
+                "category2", 100, pollutantConcentration);
+
+        assertThat(pollutant, not(notExpectedPollutant));
+    }
+
+    @Test
+    void testNotEqualsSameClassSamePollutantDifferentConcentration() {
+        Pollutant notExpectedPollutant = new Pollutant(simpleNameTest, fullNameTest, colorTest, categoryTest,
+                scoreTest, new PollutantConcentration(10.3, "unit2"));
+
+        assertThat(pollutant, not(notExpectedPollutant));
+    }
+
+    @Test
+    void testNotEqualsDifferentClass() {
+        AirQuality notExpected = new AirQuality(simpleNameTest, colorTest, categoryTest, scoreTest);
+
+        assertThat(pollutant, not(notExpected));
     }
 }

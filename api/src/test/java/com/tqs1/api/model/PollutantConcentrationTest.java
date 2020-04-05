@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 
 class PollutantConcentrationTest {
@@ -30,9 +31,28 @@ class PollutantConcentrationTest {
     }
 
     @Test
-    void testEquals() {
+    void testEqualsDifferentObjects() {
         PollutantConcentration expectedPollutantConcentration = new PollutantConcentration(testValue, testUnit);
 
         assertThat(pollutantConcentration, is(expectedPollutantConcentration));
+    }
+
+    @Test
+    void testEqualsSameObjects() {
+        assertThat(pollutantConcentration, is(pollutantConcentration));
+    }
+
+    @Test
+    void testNotEquals() {
+        PollutantConcentration notExpectedPollutantConcentration = new PollutantConcentration(90.123, "unit2");
+
+        assertThat(pollutantConcentration, not(notExpectedPollutantConcentration));
+    }
+
+    @Test
+    void testNotEqualsDifferentClass() {
+        Object notExpected = new Object();
+
+        assertThat(pollutantConcentration, not(notExpected));
     }
 }

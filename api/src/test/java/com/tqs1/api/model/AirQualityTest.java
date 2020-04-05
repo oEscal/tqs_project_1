@@ -79,10 +79,89 @@ class AirQualityTest {
     }
 
     @Test
-    void testEquals() {
+    void testEqualsSameObject() {
+        assertThat(airQuality, is(airQuality));
+    }
+
+    @Test
+    void testEqualsWithoutPollutants() {
         AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
                 scoreTest);
 
         assertThat(airQuality, is(expectedAirQuality));
+    }
+
+    @Test
+    void testEqualsWithPollutants() {
+        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+                scoreTest);
+
+        this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+        this.airQuality.addPollutant(new Pollutant("simple_name_test2", "full_name_test2",
+                "color_test2", "category_test2", 14,
+                new PollutantConcentration(5, "unit_test2")));
+        expectedAirQuality.addPollutant(new Pollutant("simple_name_test2", "full_name_test2",
+                "color_test2", "category_test2", 14,
+                new PollutantConcentration(5, "unit_test2")));
+        expectedAirQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+
+        assertThat(airQuality, is(expectedAirQuality));
+    }
+
+    @Test
+    void testEqualsWithPollutantsWithDifferentOrder() {
+        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+                scoreTest);
+
+        this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+        expectedAirQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+
+        assertThat(airQuality, is(expectedAirQuality));
+    }
+
+    @Test
+    void testNotEqualsSameAirQualityDifferentPollutants() {
+        AirQuality notExpectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+                scoreTest);
+
+        this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+        notExpectedAirQuality.addPollutant(new Pollutant("simple_name_test2", "full_name_test2",
+                "color_test2", "category_test2", 14,
+                new PollutantConcentration(5, "unit_test2")));
+
+        assertThat(airQuality, not(notExpectedAirQuality));
+    }
+
+    @Test
+    void testNotEqualsDifferentAirQualitySamePollutants() {
+        AirQuality notExpectedAirQuality = new AirQuality("pollutant2", "color2",
+                "category2", 50);
+
+        this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+        notExpectedAirQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
+                "color_test", "category_test", 13,
+                new PollutantConcentration(6.9, "unit_test")));
+
+        assertThat(airQuality, not(notExpectedAirQuality));
+    }
+
+    @Test
+    void testNotEqualsDifferentClass() {
+        Pollutant notExpected = new Pollutant("simple_name2", "full_name2", "colo2",
+                "category2", 100, new PollutantConcentration(10.3, "unit2"));
+
+        assertThat(airQuality, not(notExpected));
     }
 }
