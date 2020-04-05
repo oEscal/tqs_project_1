@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -43,7 +41,7 @@ class BreezometerServiceTest {
     private BreezometerService breezometerService;
 
     @Test
-    void testFindAddressForLocation() throws URISyntaxException, IOException, ParseException {
+    void testRequestHourly() throws URISyntaxException, IOException, ParseException {
 
         // for air quality
         String[] expectedColor = {"#96D62B", "#8AD130"},
@@ -60,7 +58,7 @@ class BreezometerServiceTest {
         String[] expectedUnits = {"ppb", "ppb"};
         double[] expectedValue = {41.46, 171.91};
 
-        when(httpClient.get(any(String.class)))
+        when(httpClient.get(createLinkString(BreezometerEndpoints.HISTORICAL_HOURLY, 10, 20, 3)))
                 .thenReturn("{\n" +
                         "    \"metadata\": null,\n" +
                         "    \"data\": [\n" +
