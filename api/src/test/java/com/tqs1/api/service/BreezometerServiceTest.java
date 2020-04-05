@@ -51,8 +51,13 @@ class BreezometerServiceTest {
         testRequestHourly(BreezometerEndpoints.FORECAST_HOURLY);
     }
 
+    @Test
+    void testCurrentConditionsRequest() throws ParseException, IOException, URISyntaxException {
+        testRequestHourly(BreezometerEndpoints.CURRENT_CONDITIONS);
+    }
 
-    void testRequestHourly(BreezometerEndpoints endpoint) throws URISyntaxException, IOException, ParseException {
+
+    private void testRequestHourly(BreezometerEndpoints endpoint) throws URISyntaxException, IOException, ParseException {
 
         // for air quality
         String[] expectedColor = {"#96D62B", "#8AD130"},
