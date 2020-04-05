@@ -40,8 +40,19 @@ class BreezometerServiceTest {
     @InjectMocks
     private BreezometerService breezometerService;
 
+
     @Test
-    void testRequestHourly() throws URISyntaxException, IOException, ParseException {
+    void testHistoricalRequest() throws ParseException, IOException, URISyntaxException {
+        testRequestHourly(BreezometerEndpoints.HISTORICAL_HOURLY);
+    }
+
+    @Test
+    void testForecastRequest() throws ParseException, IOException, URISyntaxException {
+        testRequestHourly(BreezometerEndpoints.FORECAST_HOURLY);
+    }
+
+
+    void testRequestHourly(BreezometerEndpoints endpoint) throws URISyntaxException, IOException, ParseException {
 
         // for air quality
         String[] expectedColor = {"#96D62B", "#8AD130"},
@@ -58,13 +69,12 @@ class BreezometerServiceTest {
         String[] expectedUnits = {"ppb", "ppb"};
         double[] expectedValue = {41.46, 171.91};
 
-        when(httpClient.get(createLinkString(BreezometerEndpoints.HISTORICAL_HOURLY, 10, 20, 3)))
+        when(httpClient.get(createLinkString(endpoint, 10, 20, 3)))
                 .thenReturn(historicalJson(expectedScore, expectedColor, expectedCategory, expectedPollutant,
                         expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
                         expectedPollutantCategory, expectedValue, expectedUnits));
 
-        List<AirQuality> returnedAirQualityList = breezometerService.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY,
-                10, 20, 3);
+        List<AirQuality> returnedAirQualityList = breezometerService.requestApi(endpoint, 10, 20, 3);
 
         List<AirQuality> expectedAirQualityList = new ArrayList<>();
 
