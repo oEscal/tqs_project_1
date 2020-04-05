@@ -33,7 +33,7 @@ class AirQualityDeserializerTest {
         String[] expectedUnits = {"ppb", "ppb"};
         double[] expectedValue = {41.46, 171.91};
 
-        String json = JsonSamples.jsonAirQualityOnePollutant(expectedScore, expectedColor, expectedCategory,
+        String json = JsonSamples.jsonAirQualityOnePollutantData(expectedScore, expectedColor, expectedCategory,
                 expectedPollutant, expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
                 expectedPollutantCategory, expectedValue, expectedUnits);
 
@@ -47,8 +47,8 @@ class AirQualityDeserializerTest {
                 expectedPollutantColor[1], expectedPollutantCategory[1], expectedPollutantScore[1],
                 new PollutantConcentration(expectedValue[1], expectedUnits[1])));
 
-        AirQuality obtained_air_quality = new ObjectMapper().readValue(json, AirQuality.class);
+        AirQuality obtainedAirQuality = new ObjectMapper().readValue(json, AirQuality.class);
 
-        assertThat(obtained_air_quality, is(expectedAirQuality));
+        assertThat(obtainedAirQuality, is(expectedAirQuality));
     }
 }

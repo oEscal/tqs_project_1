@@ -2,11 +2,11 @@ package com.tqs1.api.utils;
 
 public class JsonSamples {
 
-    public static String jsonAirQualityOnePollutant(int expectedScore, String expectedColor, String expectedCategory,
-                                                    String expectedPollutant, String[] expectedSimpleName,
-                                                    String[] expectedFullName, int[] expectedPollutantScore,
-                                                    String[] expectedPollutantColor, String[] expectedPollutantCategory,
-                                                    double[] expectedValue, String[] expectedUnits) {
+    public static String jsonAirQualityOnePollutantData(int expectedScore, String expectedColor, String expectedCategory,
+                                                        String expectedPollutant, String[] expectedSimpleName,
+                                                        String[] expectedFullName, int[] expectedPollutantScore,
+                                                        String[] expectedPollutantColor, String[] expectedPollutantCategory,
+                                                        double[] expectedValue, String[] expectedUnits) {
         return "{\n" +
                 "        \"datetime\": \"2020-04-04T16:00:00Z\",\n" +
                 "        \"data_available\": true,\n" +
