@@ -115,10 +115,18 @@ class BreezometerServiceTest {
         String[] expectedUnits = {"ppb", "ppb"};
         double[] expectedValue = {41.46, 171.91};
 
+        String json = JsonSamples.jsonAirQualitySeveralPollutantData(expectedScore, expectedColor, expectedCategory,
+                expectedPollutant, expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
+                expectedPollutantCategory, expectedValue, expectedUnits);
+
+        json = "{\n" +
+                "    \"metadata\": null,\n" +
+                "    \"data\": " + json  + ",\n" +
+                "    \"error\": null\n" +
+                "}";
+
         when(httpClient.get(createLinkString(endpoint, 10, 20, 3)))
-                .thenReturn(historicalJson(expectedScore, expectedColor, expectedCategory, expectedPollutant,
-                        expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
-                        expectedPollutantCategory, expectedValue, expectedUnits));
+                .thenReturn(json);
 
         List<AirQuality> returnedAirQualityList = breezometerService.requestApi(endpoint, 10, 20, 3);
 
@@ -163,133 +171,5 @@ class BreezometerServiceTest {
     private String createLinkString(BreezometerEndpoints endpoint, double latitude, double longitude)
             throws URISyntaxException {
         return createLinkString(endpoint, latitude, longitude, 0);
-    }
-
-    private String historicalJson(int[] expectedScore, String[] expectedColor, String[] expectedCategory,
-                                  String[] expectedPollutant, String[] expectedSimpleName, String[] expectedFullName,
-                                  int[] expectedPollutantScore, String[] expectedPollutantColor, String[] expectedPollutantCategory,
-                                  double[] expectedValue, String[] expectedUnits) {
-        return "{\n" +
-                "    \"metadata\": null,\n" +
-                "    \"data\": [\n" +
-                "        {\n" +
-                "            \"datetime\": \"2020-04-05T03:00:00Z\",\n" +
-                "            \"data_available\": true,\n" +
-                "            \"indexes\": {\n" +
-                "                \"baqi\": {\n" +
-                "                    \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                    \"aqi\": " + expectedScore[0] + ",\n" +
-                "                    \"aqi_display\": \"" + expectedScore[0] + "\",\n" +
-                "                    \"color\": \"" + expectedColor[0] + "\",\n" +
-                "                    \"category\": \"" + expectedCategory[0] + "\",\n" +
-                "                    \"dominant_pollutant\": \"" + expectedPollutant[0] + "\"\n" +
-                "                },\n" +
-                "                \"fra_atmo\": {\n" +
-                "                    \"display_name\": \"AQI (FR)\",\n" +
-                "                    \"aqi\": 5,\n" +
-                "                    \"aqi_display\": \"5\",\n" +
-                "                    \"color\": \"#FFA500\",\n" +
-                "                    \"category\": \"Average air quality\",\n" +
-                "                    \"dominant_pollutant\": \"pm10\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"pollutants\": {\n" +
-                "                \"co\": {\n" +
-                "                    \"display_name\": \"" + expectedSimpleName[0] + "\",\n" +
-                "                    \"full_name\": \"" + expectedFullName[0] + "\",\n" +
-                "                    \"aqi_information\": {\n" +
-                "                        \"baqi\": {\n" +
-                "                            \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                            \"aqi\": " + expectedPollutantScore[0] + ",\n" +
-                "                            \"aqi_display\": \"" + expectedPollutantScore[0] + "\",\n" +
-                "                            \"color\": \"" + expectedPollutantColor[0] + "\",\n" +
-                "                            \"category\": \"" + expectedPollutantCategory[0] + "\"\n" +
-                "                        }\n" +
-                "                    },\n" +
-                "                    \"concentration\": {\n" +
-                "                        \"value\": " + expectedValue[0] + ",\n" +
-                "                        \"units\": \"" + expectedUnits[0] + "\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"o3\": {\n" +
-                "                    \"display_name\": \"" + expectedSimpleName[1] + "\",\n" +
-                "                    \"full_name\": \"" + expectedFullName[1] + "\",\n" +
-                "                    \"aqi_information\": {\n" +
-                "                        \"baqi\": {\n" +
-                "                            \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                            \"aqi\": " + expectedPollutantScore[1] + ",\n" +
-                "                            \"aqi_display\": \"" + expectedPollutantScore[1] + "\",\n" +
-                "                            \"color\": \"" + expectedPollutantColor[1] + "\",\n" +
-                "                            \"category\": \"" + expectedPollutantCategory[1] + "\"\n" +
-                "                        }\n" +
-                "                    },\n" +
-                "                    \"concentration\": {\n" +
-                "                        \"value\": " + expectedValue[1] + ",\n" +
-                "                        \"units\": \"" + expectedUnits[1] + "\"\n" +
-                "                    }\n" +
-                "                }\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"datetime\": \"2020-04-05T04:00:00Z\",\n" +
-                "            \"data_available\": true,\n" +
-                "            \"indexes\": {\n" +
-                "                \"baqi\": {\n" +
-                "                    \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                    \"aqi\": " + expectedScore[1] + ",\n" +
-                "                    \"aqi_display\": \"" + expectedScore[1] + "\",\n" +
-                "                    \"color\": \"" + expectedColor[1] + "\",\n" +
-                "                    \"category\": \"" + expectedCategory[1] + "\",\n" +
-                "                    \"dominant_pollutant\": \"" + expectedPollutant[1] + "\"\n" +
-                "                },\n" +
-                "                \"fra_atmo\": {\n" +
-                "                    \"display_name\": \"AQI (FR)\",\n" +
-                "                    \"aqi\": 5,\n" +
-                "                    \"aqi_display\": \"5\",\n" +
-                "                    \"color\": \"#FFA500\",\n" +
-                "                    \"category\": \"Average air quality\",\n" +
-                "                    \"dominant_pollutant\": \"pm10\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"pollutants\": {\n" +
-                "                \"co\": {\n" +
-                "                    \"display_name\": \"" + expectedSimpleName[0] + "\",\n" +
-                "                    \"full_name\": \"" + expectedFullName[0] + "\",\n" +
-                "                    \"aqi_information\": {\n" +
-                "                        \"baqi\": {\n" +
-                "                            \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                            \"aqi\": " + expectedPollutantScore[0] + ",\n" +
-                "                            \"aqi_display\": \"" + expectedPollutantScore[0] + "\",\n" +
-                "                            \"color\": \"" + expectedPollutantColor[0] + "\",\n" +
-                "                            \"category\": \"" + expectedPollutantCategory[0] + "\"\n" +
-                "                        }\n" +
-                "                    },\n" +
-                "                    \"concentration\": {\n" +
-                "                        \"value\": " + expectedValue[0] + ",\n" +
-                "                        \"units\": \"" + expectedUnits[0] + "\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"o3\": {\n" +
-                "                    \"display_name\": \"" + expectedSimpleName[1] + "\",\n" +
-                "                    \"full_name\": \"" + expectedFullName[1] + "\",\n" +
-                "                    \"aqi_information\": {\n" +
-                "                        \"baqi\": {\n" +
-                "                            \"display_name\": \"BreezoMeter AQI\",\n" +
-                "                            \"aqi\": " + expectedPollutantScore[1] + ",\n" +
-                "                            \"aqi_display\": \"" + expectedPollutantScore[1] + "\",\n" +
-                "                            \"color\": \"" + expectedPollutantColor[1] + "\",\n" +
-                "                            \"category\": \"" + expectedPollutantCategory[1] + "\"\n" +
-                "                        }\n" +
-                "                    },\n" +
-                "                    \"concentration\": {\n" +
-                "                        \"value\": " + expectedValue[1] + ",\n" +
-                "                        \"units\": \"" + expectedUnits[1] + "\"\n" +
-                "                    }\n" +
-                "                }\n" +
-                "            }\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"error\": null\n" +
-                "}";
     }
 }
