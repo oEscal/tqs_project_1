@@ -1,13 +1,8 @@
 package com.tqs1.api.controller;
 
-import com.fasterxml.jackson.databind.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.tqs1.api.model.AirQuality;
-import com.tqs1.api.model.Message;
-import com.tqs1.api.model.Pollutant;
-import com.tqs1.api.model.PollutantConcentration;
+import com.tqs1.api.model.*;
 import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.HttpClient;
 import com.tqs1.api.utils.BuildBreezometerLink;
@@ -22,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
@@ -31,7 +25,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = "breezometer.token=test_token")
 class ConditionsControllerIT {
+
+    private static final int MAX_HOURS_FORECAST = 95;
+    private static final int MAX_HOURS_HISTORY = 168;
 
     // for air quality
     private String[] expectedColor = {"#96D62B", "#8AD130"},
@@ -113,6 +109,11 @@ class ConditionsControllerIT {
         when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.FORECAST_HOURLY, 10, 20, 2))).thenReturn(json);
         when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.HISTORICAL_HOURLY, 10, 20, 2))).thenReturn(json);
     }
+
+
+    /**
+     * Success tests
+     **/
 
     @Test
     void testCurrentConditionsJsonObject() throws Exception {
@@ -191,6 +192,68 @@ class ConditionsControllerIT {
         testHourlyAirQualityObject(request);
     }
 
+    /**
+     * Failure tests
+     **/
+
+    @Test
+    void testForecastZeroHours() throws Exception {
+
+        RequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "0");
+
+        testReceiveErrorMessage(request, MessageDetails.ZERO_HOURS_ERROR);
+    }
+
+    @Test
+    void testHistoricalZeroHours() throws Exception {
+
+        RequestBuilder request = get("/historic").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "0");
+
+        testReceiveErrorMessage(request, MessageDetails.ZERO_HOURS_ERROR);
+    }
+
+    @Test
+    void testForecastExceedMaxHours() throws Exception {
+
+        RequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20")
+                .param("hours", String.valueOf(MAX_HOURS_FORECAST));
+
+        testReceiveErrorMessage(request, MessageDetails.MAX_HOURS_FORECAST_ERROR);
+    }
+
+    @Test
+    void testHistoricalExceedMaxHours() throws Exception {
+
+        RequestBuilder request = get("/historic").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20")
+                .param("hours", String.valueOf(MAX_HOURS_HISTORY));
+
+        testReceiveErrorMessage(request, MessageDetails.MAX_HOURS_HISTORY_ERROR);
+    }
+
+    @Test
+    void testForecastNegativeHours() throws Exception {
+
+        RequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20")
+                .param("hours", "-1");
+
+        testReceiveErrorMessage(request, MessageDetails.NEGATIVE_HOURS_ERROR);
+    }
+
+    @Test
+    void testHistoryNegativeHours() throws Exception {
+
+        RequestBuilder request = get("/historic").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20")
+                .param("hours", "-1");
+
+        testReceiveErrorMessage(request, MessageDetails.NEGATIVE_HOURS_ERROR);
+    }
+
     private void testHourlyConditionsJsonObject(RequestBuilder request) throws Exception {
 
         mvc.perform(request).andExpect(status().isOk())
@@ -236,5 +299,14 @@ class ConditionsControllerIT {
 
         // test
         MatcherAssert.assertThat(response.getMultipleAirQuality(), Matchers.is(expectedAirQualityList));
+    }
+
+    private void testReceiveErrorMessage(RequestBuilder request, MessageDetails expectedMessageDetails) throws Exception {
+
+        ResultActions resultActions = mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("$.airQuality", nullValue()))
+                .andExpect(jsonPath("$.multipleAirQuality", nullValue()))
+                .andExpect(jsonPath("$.detail", is(expectedMessageDetails.getDetail())))
+                .andExpect(jsonPath("$.success", is(false)));
     }
 }

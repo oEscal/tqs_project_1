@@ -31,7 +31,7 @@ public class PollutantConcentrationDeserializer extends StdDeserializer<Pollutan
 
         JsonNode mainNode = jsonParser.getCodec().readTree(jsonParser);
 
-        double value = ((DoubleNode) mainNode.get("value")).doubleValue();
+        double value = mainNode.get("value").doubleValue();
         String units = mainNode.get("units").textValue();
 
         return new PollutantConcentration(value, units);
