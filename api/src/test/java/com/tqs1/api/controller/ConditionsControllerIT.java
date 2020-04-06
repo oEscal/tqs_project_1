@@ -359,12 +359,12 @@ class ConditionsControllerIT {
     private void testCoordinatesLimit(MockHttpServletRequestBuilder request, int value, MessageErrorDetails messageErrorDetails)
             throws Exception {
 
-        // test for negative latitude
+        // test for latitude
         testReceiveErrorMessage(request.param("lat", String.valueOf(value)).param("lon", "20"),
                 messageErrorDetails);
 
-        // test for negative longitude
-        testReceiveErrorMessage(request.param("lat", String.valueOf(value)).param("lon", "-1"),
+        // test for longitude
+        testReceiveErrorMessage(request.param("lat", "10").param("lon", String.valueOf(value)),
                 messageErrorDetails);
     }
 
