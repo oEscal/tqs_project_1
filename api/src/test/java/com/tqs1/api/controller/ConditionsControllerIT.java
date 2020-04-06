@@ -208,7 +208,7 @@ class ConditionsControllerIT {
     @Test
     void testHistoricalZeroHours() throws Exception {
 
-        RequestBuilder request = get("/historic").contentType(MediaType.APPLICATION_JSON)
+        RequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20").param("hours", "0");
 
         testReceiveErrorMessage(request, MessageDetails.ZERO_HOURS_ERROR);
@@ -227,7 +227,7 @@ class ConditionsControllerIT {
     @Test
     void testHistoricalExceedMaxHours() throws Exception {
 
-        RequestBuilder request = get("/historic").contentType(MediaType.APPLICATION_JSON)
+        RequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20")
                 .param("hours", String.valueOf(MAX_HOURS_HISTORY));
 
@@ -247,7 +247,7 @@ class ConditionsControllerIT {
     @Test
     void testHistoryNegativeHours() throws Exception {
 
-        RequestBuilder request = get("/historic").contentType(MediaType.APPLICATION_JSON)
+        RequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20")
                 .param("hours", "-1");
 

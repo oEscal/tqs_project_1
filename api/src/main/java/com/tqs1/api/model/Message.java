@@ -17,6 +17,12 @@ public class Message {
 
     public Message() {}
 
+    public Message(String detail, boolean success) {
+
+        this.detail = detail;
+        this.success = success;
+    }
+
     public Message(AirQuality data, String detail, boolean success) {
 
         this.airQuality = data;
