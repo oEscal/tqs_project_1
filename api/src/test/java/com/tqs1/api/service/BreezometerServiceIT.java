@@ -13,8 +13,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -28,9 +31,10 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
 
-@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 @TestPropertySource(properties = "breezometer.token=test_token")
-class BreezometerServiceTest {
+class BreezometerServiceIT {
 
     // for air quality
     private String[] expectedColor = {"#96D62B", "#8AD130"},
@@ -54,11 +58,12 @@ class BreezometerServiceTest {
     private String breezometerAllFeatures;
 
 
-    @Mock(lenient = true)
-    private HttpClient httpClient;
-
-    @InjectMocks
+    @Autowired
     private BreezometerService breezometerService;
+
+    // @Mock(lenient = true)
+    @MockBean
+    private HttpClient httpClient;
 
 
     @BeforeEach
