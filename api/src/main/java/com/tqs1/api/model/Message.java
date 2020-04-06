@@ -1,11 +1,17 @@
 package com.tqs1.api.model;
 
+
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class Message<T> {
 
     private T data;
     private String detail;
     private boolean success;
 
+    public Message() {}
 
     public Message(T data, String detail, boolean success) {
 

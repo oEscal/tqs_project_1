@@ -3,17 +3,20 @@ package com.tqs1.api.service;
 import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Pollutant;
 import com.tqs1.api.model.PollutantConcentration;
+import com.tqs1.api.utils.BuildBreezometerLink;
 import com.tqs1.api.utils.JsonSamples;
-import org.apache.http.client.utils.URIBuilder;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-@TestPropertySource(locations = "application-tests.properties")
+@TestPropertySource(properties = "breezometer.token=test_token")
 class BreezometerServiceTest {
 
     // for air quality
@@ -44,12 +47,11 @@ class BreezometerServiceTest {
     private String[] expectedUnits = {"ppb", "ppb"};
     private double[] expectedValue = {41.46, 171.91};
 
-
     @Value("${breezometer.token}")
-    private String tokenTest;
+    private String breezometerToken;
 
     @Value("${breezometer.all_features}")
-    private String breezometerAllFeaturesTest;
+    private String breezometerAllFeatures;
 
 
     @Mock(lenient = true)
@@ -61,6 +63,8 @@ class BreezometerServiceTest {
 
     @BeforeEach
     void setup() throws URISyntaxException, IOException {
+
+        BuildBreezometerLink linkBuilder = new BuildBreezometerLink(breezometerToken, breezometerAllFeatures);
         String json;
 
         // for current conditions test
@@ -72,7 +76,7 @@ class BreezometerServiceTest {
                 "    \"data\": " + json + ",\n" +
                 "    \"error\": null\n" +
                 "}";
-        when(httpClient.get(createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 10, 20)))
+        when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 10, 20)))
                 .thenReturn(json);
 
         // for hourly conditions test
@@ -84,8 +88,8 @@ class BreezometerServiceTest {
                 "    \"data\": " + json  + ",\n" +
                 "    \"error\": null\n" +
                 "}";
-        when(httpClient.get(createLinkString(BreezometerEndpoints.FORECAST_HOURLY, 10, 20, 2))).thenReturn(json);
-        when(httpClient.get(createLinkString(BreezometerEndpoints.HISTORICAL_HOURLY, 10, 20, 2))).thenReturn(json);
+        when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.FORECAST_HOURLY, 10, 20, 2))).thenReturn(json);
+        when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.HISTORICAL_HOURLY, 10, 20, 2))).thenReturn(json);
     }
 
     @Test
@@ -150,23 +154,5 @@ class BreezometerServiceTest {
 
         // test
         assertThat(returnedAirQualityList, is(expectedAirQualityList));
-    }
-
-    private String createLinkString(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
-            throws URISyntaxException {
-
-        URIBuilder uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
-        uriBuilder.addParameter("lat", String.valueOf(latitude));
-        uriBuilder.addParameter("lon", String.valueOf(longitude));
-        uriBuilder.addParameter("key", tokenTest);
-        uriBuilder.addParameter("features", breezometerAllFeaturesTest);
-        uriBuilder.addParameter("hours", String.valueOf(hours));
-
-        return uriBuilder.build().toString();
-    }
-
-    private String createLinkString(BreezometerEndpoints endpoint, double latitude, double longitude)
-            throws URISyntaxException {
-        return createLinkString(endpoint, latitude, longitude, 0);
     }
 }

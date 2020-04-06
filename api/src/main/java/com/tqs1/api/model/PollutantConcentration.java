@@ -3,15 +3,19 @@ package com.tqs1.api.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.tqs1.api.serializers.PollutantConcentrationDeserializer;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 
+@Component
 @JsonDeserialize(using = PollutantConcentrationDeserializer.class)
 public class PollutantConcentration {
 
     private double value;
     private String units;
+
+    public PollutantConcentration() {}
 
     public PollutantConcentration(double value, String units) {
         this.value = value;

@@ -8,10 +8,12 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.tqs1.api.model.Pollutant;
 import com.tqs1.api.model.PollutantConcentration;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 
+@Service
 public class PollutantDeserializer extends StdDeserializer<Pollutant> {
 
     private static final long serialVersionUID = 6106269076155338042L;

@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.tqs1.api.model.PollutantConcentration;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 
+@Service
 public class PollutantConcentrationDeserializer extends StdDeserializer<PollutantConcentration> {
 
 

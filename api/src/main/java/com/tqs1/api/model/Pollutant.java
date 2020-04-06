@@ -3,16 +3,20 @@ package com.tqs1.api.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.tqs1.api.serializers.PollutantDeserializer;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 
+@Component
 @JsonDeserialize(using = PollutantDeserializer.class)
 public class Pollutant extends SimpleAirQuality {
 
     private String simpleName;
     private String fullName;
     private PollutantConcentration concentration;
+
+    public Pollutant() {}
 
     public Pollutant(String simpleName, String fullName, String airQualityColor, String airQualityCategory,
                      int airQualityScore, PollutantConcentration concentration) {

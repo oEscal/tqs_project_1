@@ -8,6 +8,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class BreezometerService {
     @Value("${breezometer.all_features}")
     private String breezometerAllFeatures;
 
-    private HttpClient httpClient = new HttpBasic();
+    @Autowired
+    private HttpClient httpClient;
 
     public Message<List<AirQuality>> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
             throws URISyntaxException, IOException, ParseException {

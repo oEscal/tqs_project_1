@@ -19,25 +19,25 @@ import java.util.List;
 public class ConditionsController {
 
     @Autowired
-    private BreezometerService test;
+    private BreezometerService service;
 
     @GetMapping("/current")
     public Message<AirQuality> currentConditions(@RequestParam Double lat, @RequestParam Double lon)
             throws IOException, URISyntaxException, ParseException {
-        return test.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, lat, lon);
+        return service.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, lat, lon);
     }
 
     @GetMapping("/forecast")
     public Message<List<AirQuality>> forecastConditions(@RequestParam Double lat, @RequestParam Double lon,
                                                         @RequestParam Integer hours)
             throws IOException, URISyntaxException, ParseException {
-        return test.requestApi(BreezometerEndpoints.FORECAST_HOURLY, lat, lon, hours);
+        return service.requestApi(BreezometerEndpoints.FORECAST_HOURLY, lat, lon, hours);
     }
 
     @GetMapping("/history")
     public Message<List<AirQuality>> historyConditions(@RequestParam Double lat, @RequestParam Double lon,
                                                        @RequestParam Integer hours)
             throws IOException, URISyntaxException, ParseException {
-        return test.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY, lat, lon, hours);
+        return service.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY, lat, lon, hours);
     }
 }

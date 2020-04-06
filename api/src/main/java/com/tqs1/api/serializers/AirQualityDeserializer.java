@@ -8,10 +8,13 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Pollutant;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Iterator;
 
+
+@Service
 public class AirQualityDeserializer extends StdDeserializer<AirQuality> {
 
     private static final long serialVersionUID = 6106269076155338045L;

@@ -2,6 +2,7 @@ package com.tqs1.api.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.tqs1.api.serializers.AirQualityDeserializer;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 
+@Component
 @JsonDeserialize(using = AirQualityDeserializer.class)
 public class AirQuality extends SimpleAirQuality {
 
