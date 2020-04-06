@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringRunner.class)
@@ -93,11 +95,47 @@ class ConditionsControllerTestIT {
     }
 
     @Test
-    void currentConditions() throws Exception {
+    void testCurrentConditionsJsonObject() throws Exception {
 
-        RequestBuilder request =
-                get("/current").contentType(MediaType.APPLICATION_JSON)
-                        .param("lat", "10").param("lon", "20");
-        mvc.perform(request).andExpect(jsonPath("$.success", is(true)));
+        RequestBuilder request =get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20");
+
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.dominantPollutant", is(expectedPollutant[0])))
+                .andExpect(jsonPath("$.data.pollutants", hasSize(2)))
+                .andExpect(jsonPath("$.data.pollutants[*].simpleName", containsInAnyOrder(expectedSimpleName)))
+                .andExpect(jsonPath("$.data.pollutants[*].concentration.value", containsInAnyOrder(expectedValue[0], expectedValue[1])))
+                .andExpect(jsonPath("$", hasKey("detail")))
+                .andExpect(jsonPath("$.success", is(true)));
+    }
+
+    @Test
+    void testForecastConditionsJsonObject() throws Exception {
+
+        RequestBuilder request =get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "2");
+
+        testHourlyConditionsJsonObject(request);
+    }
+
+    @Test
+    void testHistoricalConditionsJsonObject() throws Exception {
+
+        RequestBuilder request =get("/history").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "2");
+
+        testHourlyConditionsJsonObject(request);
+    }
+
+    private void testHourlyConditionsJsonObject(RequestBuilder request) throws Exception {
+
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.data[*].dominantPollutant", containsInAnyOrder(expectedPollutant)))
+                .andExpect(jsonPath("$.data[*].pollutants", hasSize(2)))
+                .andExpect(jsonPath("$.data[0].pollutants[*].simpleName", containsInAnyOrder(expectedSimpleName)))
+                .andExpect(jsonPath("$.data[0].pollutants[*].concentration.value", containsInAnyOrder(expectedValue[0], expectedValue[1])))
+                .andExpect(jsonPath("$", hasKey("detail")))
+                .andExpect(jsonPath("$.success", is(true)));
     }
 }
