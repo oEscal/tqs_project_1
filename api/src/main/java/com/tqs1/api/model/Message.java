@@ -3,25 +3,41 @@ package com.tqs1.api.model;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+
 
 @Component
-public class Message<T> {
+public class Message {
 
-    private T data;
+    private AirQuality airQuality;
+    private List<AirQuality> multipleAirQuality;
+
     private String detail;
     private boolean success;
 
     public Message() {}
 
-    public Message(T data, String detail, boolean success) {
+    public Message(AirQuality data, String detail, boolean success) {
 
-        this.data = data;
+        this.airQuality = data;
         this.detail = detail;
         this.success = success;
     }
 
-    public T getData() {
-        return data;
+    public Message(List<AirQuality> data, String detail, boolean success) {
+
+        this.multipleAirQuality = data;
+        this.detail = detail;
+        this.success = success;
+    }
+
+    public AirQuality getAirQuality() {
+        return airQuality;
+    }
+
+    public List<AirQuality> getMultipleAirQuality() {
+        return multipleAirQuality;
     }
 
     public String getDetail() {
@@ -30,5 +46,15 @@ public class Message<T> {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "airQuality=" + airQuality +
+                ", multipleAirQuality=" + multipleAirQuality +
+                ", detail='" + detail + '\'' +
+                ", success=" + success +
+                '}';
     }
 }

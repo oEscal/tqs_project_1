@@ -30,7 +30,7 @@ public class BreezometerService {
     @Autowired
     private HttpClient httpClient;
 
-    public Message<List<AirQuality>> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
+    public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
             throws URISyntaxException, IOException, ParseException {
 
         URIBuilder uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
@@ -54,17 +54,17 @@ public class BreezometerService {
                 for (Object jsonSubData : (JSONArray) jsonData)
                     allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
 
-            return new Message<>(allAirQuality, "Success obtaining the requested information", true);
+            return new Message(allAirQuality, "Success obtaining the requested information", true);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchFieldError();
         }
     }
 
-    public Message<AirQuality> requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)
+    public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)
             throws ParseException, IOException, URISyntaxException {
 
-        Message<List<AirQuality>> originalResponse = requestApi(endpoint, latitude, longitude, 0);
-        List<AirQuality> originalAirQualityList = originalResponse.getData();
+        Message originalResponse = requestApi(endpoint, latitude, longitude, 0);
+        List<AirQuality> originalAirQualityList = originalResponse.getMultipleAirQuality();
 
         AirQuality returnAirQuality;
         if (!originalAirQualityList.isEmpty())
@@ -72,6 +72,6 @@ public class BreezometerService {
         else
             returnAirQuality = new AirQuality();
 
-        return new Message<>(returnAirQuality, originalResponse.getDetail(), originalResponse.isSuccess());
+        return new Message(returnAirQuality, originalResponse.getDetail(), originalResponse.isSuccess());
     }
 }

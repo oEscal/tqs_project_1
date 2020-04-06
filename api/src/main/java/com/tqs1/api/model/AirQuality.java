@@ -11,7 +11,7 @@ import java.util.Objects;
 
 
 @Component
-@JsonDeserialize(using = AirQualityDeserializer.class)
+@JsonDeserialize(using=AirQualityDeserializer.class)
 public class AirQuality extends SimpleAirQuality {
 
     private String dominantPollutant;

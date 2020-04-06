@@ -112,7 +112,7 @@ class BreezometerServiceIT {
 
         // get resultant data from the message returned
         AirQuality returnedAirQuality = breezometerService.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, 10, 20)
-                .getData();
+                .getAirQuality();
 
         // create a air quality object with two pollutants
         AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedColor[0], expectedCategory[0],
@@ -132,7 +132,7 @@ class BreezometerServiceIT {
 
         // get resultant data from the message returned
         List<AirQuality> returnedAirQualityList = breezometerService.requestApi(endpoint, 10, 20, 2)
-                .getData();
+                .getMultipleAirQuality();
 
         List<AirQuality> expectedAirQualityList = new ArrayList<>();
 
