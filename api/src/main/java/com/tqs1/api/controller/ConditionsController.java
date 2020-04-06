@@ -90,7 +90,7 @@ public class ConditionsController {
 
         if (latitude < 0 || longitude < 0)
             return MessageErrorDetails.NEGATIVE_COORDINATE_ERROR.getDetail();
-        if(latitude > 90 || longitude > 90)
+        if(latitude > MAX_VALUE_COORDINATE || longitude > MAX_VALUE_COORDINATE)
             return MessageErrorDetails.MAX_COORDINATE_ERROR.getDetail();
         return "";
     }
