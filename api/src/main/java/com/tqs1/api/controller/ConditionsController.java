@@ -1,6 +1,5 @@
 package com.tqs1.api.controller;
 
-import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Message;
 import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.BreezometerService;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 
 @RestController

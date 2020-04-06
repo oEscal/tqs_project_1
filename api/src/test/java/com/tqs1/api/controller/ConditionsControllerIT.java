@@ -3,6 +3,7 @@ package com.tqs1.api.controller;
 import com.fasterxml.jackson.databind.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Message;
 import com.tqs1.api.model.Pollutant;
@@ -11,6 +12,8 @@ import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.HttpClient;
 import com.tqs1.api.utils.BuildBreezometerLink;
 import com.tqs1.api.utils.JsonSamples;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +31,10 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.*;
@@ -66,16 +72,14 @@ class ConditionsControllerIT {
     private String breezometerAllFeatures;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private Gson gson;
+
 
     @LocalServerPort
     int randomServerPort;
 
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @MockBean
     private HttpClient httpClient;
@@ -144,9 +148,6 @@ class ConditionsControllerIT {
         testHourlyConditionsJsonObject(request);
     }
 
-    @Autowired
-    JsonDeserializer<AirQuality> deserializer;
-
     @Test
     void testCurrentConditionsAirQualityObject() throws Exception {
 
@@ -155,7 +156,6 @@ class ConditionsControllerIT {
 
         ResultActions resultActions = mvc.perform(request);
 
-        Gson gson = new Gson();
         JsonElement jsonElement = gson.toJsonTree(
                 new JSONParser().parse(resultActions.andReturn().getResponse().getContentAsString()));
         Message response = gson.fromJson(jsonElement, Message.class);
@@ -173,6 +173,24 @@ class ConditionsControllerIT {
         assertThat(response.getAirQuality(), is(expectedAirQuality));
     }
 
+    @Test
+    void testForecastAirQualityObject() throws Exception {
+
+        RequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "2");
+
+        testHourlyAirQualityObject(request);
+    }
+
+    @Test
+    void testHistoricalAirQualityObject() throws Exception {
+
+        RequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "2");
+
+        testHourlyAirQualityObject(request);
+    }
+
     private void testHourlyConditionsJsonObject(RequestBuilder request) throws Exception {
 
         mvc.perform(request).andExpect(status().isOk())
@@ -184,5 +202,39 @@ class ConditionsControllerIT {
                 .andExpect(jsonPath("$.airQuality", nullValue()))
                 .andExpect(jsonPath("$", hasKey("detail")))
                 .andExpect(jsonPath("$.success", is(true)));
+    }
+
+    private void testHourlyAirQualityObject(RequestBuilder request) throws Exception {
+        ResultActions resultActions = mvc.perform(request);
+
+        JsonElement jsonElement = gson.toJsonTree(
+                new JSONParser().parse(resultActions.andReturn().getResponse().getContentAsString()));
+        Message response = gson.fromJson(jsonElement, Message.class);
+
+        List<AirQuality> expectedAirQualityList = new ArrayList<>();
+
+        // add two air quality objects to list with two pollutants each
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedColor[0], expectedCategory[0],
+                expectedScore[0]);
+        expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
+                expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
+                new PollutantConcentration(expectedValue[0], expectedUnits[0])));
+        expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[1], expectedFullName[1],
+                expectedPollutantColor[1], expectedPollutantCategory[1], expectedPollutantScore[1],
+                new PollutantConcentration(expectedValue[1], expectedUnits[1])));
+        expectedAirQualityList.add(expectedAirQuality);
+
+        expectedAirQuality = new AirQuality(expectedPollutant[1], expectedColor[1], expectedCategory[1],
+                expectedScore[1]);
+        expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
+                expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
+                new PollutantConcentration(expectedValue[0], expectedUnits[0])));
+        expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[1], expectedFullName[1],
+                expectedPollutantColor[1], expectedPollutantCategory[1], expectedPollutantScore[1],
+                new PollutantConcentration(expectedValue[1], expectedUnits[1])));
+        expectedAirQualityList.add(expectedAirQuality);
+
+        // test
+        MatcherAssert.assertThat(response.getMultipleAirQuality(), Matchers.is(expectedAirQualityList));
     }
 }
