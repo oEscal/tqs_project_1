@@ -1,7 +1,7 @@
 package com.tqs1.api.controller;
 
 import com.tqs1.api.model.Message;
-import com.tqs1.api.model.MessageDetails;
+import com.tqs1.api.model.MessageErrorDetails;
 import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.BreezometerService;
 import org.json.simple.parser.ParseException;
@@ -19,6 +19,7 @@ public class ConditionsController {
 
     private static final int MAX_HOURS_FORECAST = 95;
     private static final int MAX_HOURS_HISTORY = 168;
+    private static final int MAX_VALUE_COORDINATE = 90;
 
 
     @Autowired
@@ -27,6 +28,12 @@ public class ConditionsController {
     @GetMapping("/current")
     public Message currentConditions(@RequestParam Double lat, @RequestParam Double lon)
             throws IOException, URISyntaxException, ParseException {
+
+        // coordinates limit verification
+        String limitCoordinatesRange = verifyLimitCoordinatesRange(lat, lon);
+        if (limitCoordinatesRange.length() > 0)
+            return new Message(limitCoordinatesRange, false);
+
         return service.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, lat, lon);
     }
 
@@ -35,12 +42,17 @@ public class ConditionsController {
                                                         @RequestParam Integer hours)
             throws IOException, URISyntaxException, ParseException {
 
+        // coordinates limit verification
+        String limitCoordinatesRange = verifyLimitCoordinatesRange(lat, lon);
+        if (limitCoordinatesRange.length() > 0)
+            return new Message(limitCoordinatesRange, false);
+
         // hours limit verification
-        String lowLimitHoursVerification = verifyLowLimitRange(hours);
+        String lowLimitHoursVerification = verifyLowLimitHoursRange(hours);
         if (lowLimitHoursVerification.length() > 0)
             return new Message(lowLimitHoursVerification, false);
-        if (hours >= MAX_HOURS_FORECAST)
-            return new Message(MessageDetails.MAX_HOURS_FORECAST_ERROR.getDetail(), false);
+        if (hours > MAX_HOURS_FORECAST)
+            return new Message(MessageErrorDetails.MAX_HOURS_FORECAST_ERROR.getDetail(), false);
 
         return service.requestApi(BreezometerEndpoints.FORECAST_HOURLY, lat, lon, hours);
     }
@@ -50,22 +62,36 @@ public class ConditionsController {
                                                        @RequestParam Integer hours)
             throws IOException, URISyntaxException, ParseException {
 
+        // coordinates limit verification
+        String limitCoordinatesRange = verifyLimitCoordinatesRange(lat, lon);
+        if (limitCoordinatesRange.length() > 0)
+            return new Message(limitCoordinatesRange, false);
+
         // hours limit verification
-        String lowLimitHoursVerification = verifyLowLimitRange(hours);
+        String lowLimitHoursVerification = verifyLowLimitHoursRange(hours);
         if (lowLimitHoursVerification.length() > 0)
             return new Message(lowLimitHoursVerification, false);
-        if (hours >= MAX_HOURS_HISTORY)
-            return new Message(MessageDetails.MAX_HOURS_HISTORY_ERROR.getDetail(), false);
+        if (hours > MAX_HOURS_HISTORY)
+            return new Message(MessageErrorDetails.MAX_HOURS_HISTORY_ERROR.getDetail(), false);
 
         return service.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY, lat, lon, hours);
     }
 
-    private String verifyLowLimitRange(Integer hours) {
+    private String verifyLowLimitHoursRange(Integer hours) {
 
         if (hours < 0)
-            return MessageDetails.NEGATIVE_HOURS_ERROR.getDetail();
+            return MessageErrorDetails.NEGATIVE_HOURS_ERROR.getDetail();
         if(hours == 0)
-            return MessageDetails.ZERO_HOURS_ERROR.getDetail();
+            return MessageErrorDetails.ZERO_HOURS_ERROR.getDetail();
+        return "";
+    }
+
+    private String verifyLimitCoordinatesRange(Double latitude, Double longitude) {
+
+        if (latitude < 0 || longitude < 0)
+            return MessageErrorDetails.NEGATIVE_COORDINATE_ERROR.getDetail();
+        if(latitude > 90 || longitude > 90)
+            return MessageErrorDetails.MAX_COORDINATE_ERROR.getDetail();
         return "";
     }
 }

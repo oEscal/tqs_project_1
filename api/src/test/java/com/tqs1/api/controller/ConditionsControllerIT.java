@@ -23,6 +23,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -45,6 +46,7 @@ class ConditionsControllerIT {
 
     private static final int MAX_HOURS_FORECAST = 95;
     private static final int MAX_HOURS_HISTORY = 168;
+    private static final int MAX_VALUE_COORDINATE = 90;
 
     // for air quality
     private String[] expectedColor = {"#96D62B", "#8AD130"},
@@ -202,7 +204,7 @@ class ConditionsControllerIT {
         RequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20").param("hours", "0");
 
-        testReceiveErrorMessage(request, MessageDetails.ZERO_HOURS_ERROR);
+        testReceiveErrorMessage(request, MessageErrorDetails.ZERO_HOURS_ERROR);
     }
 
     @Test
@@ -211,7 +213,7 @@ class ConditionsControllerIT {
         RequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20").param("hours", "0");
 
-        testReceiveErrorMessage(request, MessageDetails.ZERO_HOURS_ERROR);
+        testReceiveErrorMessage(request, MessageErrorDetails.ZERO_HOURS_ERROR);
     }
 
     @Test
@@ -219,9 +221,9 @@ class ConditionsControllerIT {
 
         RequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20")
-                .param("hours", String.valueOf(MAX_HOURS_FORECAST));
+                .param("hours", String.valueOf(MAX_HOURS_FORECAST + 1));
 
-        testReceiveErrorMessage(request, MessageDetails.MAX_HOURS_FORECAST_ERROR);
+        testReceiveErrorMessage(request, MessageErrorDetails.MAX_HOURS_FORECAST_ERROR);
     }
 
     @Test
@@ -229,9 +231,9 @@ class ConditionsControllerIT {
 
         RequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20")
-                .param("hours", String.valueOf(MAX_HOURS_HISTORY));
+                .param("hours", String.valueOf(MAX_HOURS_HISTORY + 1));
 
-        testReceiveErrorMessage(request, MessageDetails.MAX_HOURS_HISTORY_ERROR);
+        testReceiveErrorMessage(request, MessageErrorDetails.MAX_HOURS_HISTORY_ERROR);
     }
 
     @Test
@@ -241,7 +243,7 @@ class ConditionsControllerIT {
                 .param("lat", "10").param("lon", "20")
                 .param("hours", "-1");
 
-        testReceiveErrorMessage(request, MessageDetails.NEGATIVE_HOURS_ERROR);
+        testReceiveErrorMessage(request, MessageErrorDetails.NEGATIVE_HOURS_ERROR);
     }
 
     @Test
@@ -251,7 +253,60 @@ class ConditionsControllerIT {
                 .param("lat", "10").param("lon", "20")
                 .param("hours", "-1");
 
-        testReceiveErrorMessage(request, MessageDetails.NEGATIVE_HOURS_ERROR);
+        testReceiveErrorMessage(request, MessageErrorDetails.NEGATIVE_HOURS_ERROR);
+    }
+
+    @Test
+    void testCurrentConditionsNegativeCoordinates() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON);
+
+        testCoordinatesLimit(request, -1, MessageErrorDetails.NEGATIVE_COORDINATE_ERROR);
+    }
+
+    @Test
+    void testForecastNegativeCoordinates() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("hours", "2");
+
+        testCoordinatesLimit(request, -1, MessageErrorDetails.NEGATIVE_COORDINATE_ERROR);
+    }
+
+    @Test
+    void testHistoryNegativeCoordinates() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
+                .param("hours", "2");
+
+        testCoordinatesLimit(request, -1, MessageErrorDetails.NEGATIVE_COORDINATE_ERROR);
+    }
+
+    @Test
+    void testCurrentConditionsMaxCoordinates() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("hours", "2");
+
+        testCoordinatesLimit(request, MAX_VALUE_COORDINATE + 1, MessageErrorDetails.MAX_COORDINATE_ERROR);
+    }
+
+    @Test
+    void testForecastMaxCoordinates() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
+                .param("hours", "2");
+
+        testCoordinatesLimit(request, MAX_VALUE_COORDINATE + 1, MessageErrorDetails.MAX_COORDINATE_ERROR);
+    }
+
+    @Test
+    void testHistoryMaxCoordinates() throws Exception {
+
+        MockHttpServletRequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
+                .param("hours", "2");
+
+        testCoordinatesLimit(request, MAX_VALUE_COORDINATE + 1, MessageErrorDetails.MAX_COORDINATE_ERROR);
     }
 
     private void testHourlyConditionsJsonObject(RequestBuilder request) throws Exception {
@@ -301,12 +356,24 @@ class ConditionsControllerIT {
         MatcherAssert.assertThat(response.getMultipleAirQuality(), Matchers.is(expectedAirQualityList));
     }
 
-    private void testReceiveErrorMessage(RequestBuilder request, MessageDetails expectedMessageDetails) throws Exception {
+    private void testCoordinatesLimit(MockHttpServletRequestBuilder request, int value, MessageErrorDetails messageErrorDetails)
+            throws Exception {
 
-        ResultActions resultActions = mvc.perform(request).andExpect(status().isOk())
+        // test for negative latitude
+        testReceiveErrorMessage(request.param("lat", String.valueOf(value)).param("lon", "20"),
+                messageErrorDetails);
+
+        // test for negative longitude
+        testReceiveErrorMessage(request.param("lat", String.valueOf(value)).param("lon", "-1"),
+                messageErrorDetails);
+    }
+
+    private void testReceiveErrorMessage(RequestBuilder request, MessageErrorDetails expectedMessageErrorDetails) throws Exception {
+
+        mvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("$.airQuality", nullValue()))
                 .andExpect(jsonPath("$.multipleAirQuality", nullValue()))
-                .andExpect(jsonPath("$.detail", is(expectedMessageDetails.getDetail())))
+                .andExpect(jsonPath("$.detail", is(expectedMessageErrorDetails.getDetail())))
                 .andExpect(jsonPath("$.success", is(false)));
     }
 }
