@@ -1,4 +1,4 @@
-package com.tqs1.api.api;
+package com.tqs1.api.controller;
 
 import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.HttpClient;
@@ -29,11 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = "breezometer.token=test_token")
-class ConditionsControllerTestIT {
+class ConditionsControllerIT {
 
     // for air quality
     private String[] expectedColor = {"#96D62B", "#8AD130"},

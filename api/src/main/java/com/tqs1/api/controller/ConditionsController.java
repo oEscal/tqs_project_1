@@ -1,4 +1,4 @@
-package com.tqs1.api.api;
+package com.tqs1.api.controller;
 
 import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Message;
