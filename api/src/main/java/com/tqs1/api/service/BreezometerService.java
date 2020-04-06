@@ -43,21 +43,17 @@ public class BreezometerService {
         String response = httpClient.get(uriBuilder.build().toString());
 
         // get parts from response till reaching the address
-        try {
-            Object jsonData = ((JSONObject) new JSONParser().parse(response)).get("data");
+        Object jsonData = ((JSONObject) new JSONParser().parse(response)).get("data");
 
-            List<AirQuality> allAirQuality = new ArrayList<>();
+        List<AirQuality> allAirQuality = new ArrayList<>();
 
-            if (!(jsonData instanceof JSONArray))
-                allAirQuality.add(new ObjectMapper().readValue(jsonData.toString(), AirQuality.class));
-            else
-                for (Object jsonSubData : (JSONArray) jsonData)
-                    allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
+        if (!(jsonData instanceof JSONArray))
+            allAirQuality.add(new ObjectMapper().readValue(jsonData.toString(), AirQuality.class));
+        else
+            for (Object jsonSubData : (JSONArray) jsonData)
+                allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
 
-            return new Message(allAirQuality, "Success obtaining the requested information", true);
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoSuchFieldError();
-        }
+        return new Message(allAirQuality, "Success obtaining the requested information", true);
     }
 
     public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)

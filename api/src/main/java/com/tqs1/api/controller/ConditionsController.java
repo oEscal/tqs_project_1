@@ -20,6 +20,7 @@ public class ConditionsController {
     private static final int MAX_HOURS_FORECAST = 95;
     private static final int MAX_HOURS_HISTORY = 168;
     private static final int MAX_VALUE_COORDINATE = 90;
+    private static final int MIN_VALUE_COORDINATE = -90;
 
 
     @Autowired
@@ -88,8 +89,8 @@ public class ConditionsController {
 
     private String verifyLimitCoordinatesRange(Double latitude, Double longitude) {
 
-        if (latitude < 0 || longitude < 0)
-            return MessageErrorDetails.NEGATIVE_COORDINATE_ERROR.getDetail();
+        if (latitude < MIN_VALUE_COORDINATE || longitude < MIN_VALUE_COORDINATE)
+            return MessageErrorDetails.MIN_COORDINATE_ERROR.getDetail();
         if(latitude > MAX_VALUE_COORDINATE || longitude > MAX_VALUE_COORDINATE)
             return MessageErrorDetails.MAX_COORDINATE_ERROR.getDetail();
         return "";

@@ -47,6 +47,7 @@ class ConditionsControllerIT {
     private static final int MAX_HOURS_FORECAST = 95;
     private static final int MAX_HOURS_HISTORY = 168;
     private static final int MAX_VALUE_COORDINATE = 90;
+    private static final int MIN_VALUE_COORDINATE = -90;
 
     // for air quality
     private String[] expectedColor = {"#96D62B", "#8AD130"},
@@ -257,11 +258,11 @@ class ConditionsControllerIT {
     }
 
     @Test
-    void testCurrentConditionsNegativeCoordinates() throws Exception {
+    void testCurrentConditionsMinCoordinates() throws Exception {
 
         MockHttpServletRequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON);
 
-        testCoordinatesLimit(request, -1, MessageErrorDetails.NEGATIVE_COORDINATE_ERROR);
+        testCoordinatesLimit(request, MIN_VALUE_COORDINATE - 1, MessageErrorDetails.MIN_COORDINATE_ERROR);
     }
 
     @Test
@@ -270,7 +271,7 @@ class ConditionsControllerIT {
         MockHttpServletRequestBuilder request = get("/forecast").contentType(MediaType.APPLICATION_JSON)
                 .param("hours", "2");
 
-        testCoordinatesLimit(request, -1, MessageErrorDetails.NEGATIVE_COORDINATE_ERROR);
+        testCoordinatesLimit(request, MIN_VALUE_COORDINATE - 1, MessageErrorDetails.MIN_COORDINATE_ERROR);
     }
 
     @Test
@@ -279,7 +280,7 @@ class ConditionsControllerIT {
         MockHttpServletRequestBuilder request = get("/history").contentType(MediaType.APPLICATION_JSON)
                 .param("hours", "2");
 
-        testCoordinatesLimit(request, -1, MessageErrorDetails.NEGATIVE_COORDINATE_ERROR);
+        testCoordinatesLimit(request, MIN_VALUE_COORDINATE - 1, MessageErrorDetails.MIN_COORDINATE_ERROR);
     }
 
     @Test
