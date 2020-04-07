@@ -56,7 +56,7 @@ public class BreezometerService {
             }
         } catch (UnknownHostException e) {
             return new Message(MessageErrorDetails.HOST_ERROR.getDetail(), false);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return new Message(MessageErrorDetails.UNEXPECTED_ERROR.getDetail(), false);
         }
 
@@ -78,7 +78,7 @@ public class BreezometerService {
                     allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
         } catch (NullPointerException e) {
             return new Message(MessageErrorDetails.REQUEST_ERROR.getDetail(), false);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return new Message(MessageErrorDetails.UNEXPECTED_ERROR.getDetail(), false);
         }
 

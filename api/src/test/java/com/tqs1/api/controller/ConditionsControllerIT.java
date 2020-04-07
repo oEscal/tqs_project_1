@@ -371,7 +371,7 @@ class ConditionsControllerIT {
     void testUnexpectedErrorFromBreezometer() throws Exception {
         // trigger when latitude and longitude are both equal to 70
         given(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 70, 70)))
-                .willAnswer(invocationOnMock -> {throw new Exception();});
+                .willAnswer(invocationOnMock -> {throw new RuntimeException();});
 
         RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "70").param("lon", "70");
