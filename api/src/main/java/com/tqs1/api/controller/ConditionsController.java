@@ -81,6 +81,11 @@ public class ConditionsController {
         return service.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY, lat, lon, hours, cache);
     }
 
+    @GetMapping("/cache")
+    public Cache cacheStatistics() {
+        return cache;
+    }
+
     private String verifyLowLimitHoursRange(Integer hours) {
 
         if (hours < 0)
