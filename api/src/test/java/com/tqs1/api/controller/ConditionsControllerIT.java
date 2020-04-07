@@ -13,11 +13,13 @@ import org.hamcrest.Matchers;
 import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockReset;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
@@ -87,6 +89,9 @@ class ConditionsControllerIT {
 
     @MockBean
     private HttpClient httpClient;
+
+    @MockBean
+    private Cache cache;
 
 
     @BeforeEach
