@@ -3,6 +3,7 @@ package com.tqs1.api.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs1.api.model.AirQuality;
 import com.tqs1.api.model.Message;
+import com.tqs1.api.model.MessageErrorDetails;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,18 +42,36 @@ public class BreezometerService {
         uriBuilder.addParameter("features", breezometerAllFeatures);
         uriBuilder.addParameter("hours", String.valueOf(hours));
 
-        String response = httpClient.get(uriBuilder.build().toString());
+        String response;
+        try {
+             response = httpClient.get(uriBuilder.build().toString());
+        } catch (UnknownHostException e) {
+            return new Message(MessageErrorDetails.HOST_ERROR.getDetail(), false);
+        } catch (Exception e) {
+            return new Message(MessageErrorDetails.UNEXPECTED_ERROR.getDetail(), false);
+        }
 
         // get parts from response till reaching the address
         Object jsonData = ((JSONObject) new JSONParser().parse(response)).get("data");
+        JSONObject jsonError = (JSONObject) ((JSONObject) new JSONParser().parse(response)).get("error");
 
         List<AirQuality> allAirQuality = new ArrayList<>();
 
-        if (!(jsonData instanceof JSONArray))
-            allAirQuality.add(new ObjectMapper().readValue(jsonData.toString(), AirQuality.class));
-        else
-            for (Object jsonSubData : (JSONArray) jsonData)
-                allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
+        try {
+            // verify if API returned some error
+            if (jsonError != null)
+                return new Message(jsonError.get("title").toString(), false);
+
+            if (!(jsonData instanceof JSONArray))
+                allAirQuality.add(new ObjectMapper().readValue(jsonData.toString(), AirQuality.class));
+            else
+                for (Object jsonSubData : (JSONArray) jsonData)
+                    allAirQuality.add(new ObjectMapper().readValue(jsonSubData.toString(), AirQuality.class));
+        } catch (NullPointerException e) {
+            return new Message(MessageErrorDetails.REQUEST_ERROR.getDetail(), false);
+        } catch (Exception e) {
+            return new Message(MessageErrorDetails.UNEXPECTED_ERROR.getDetail(), false);
+        }
 
         return new Message(allAirQuality, "Success obtaining the requested information", true);
     }
@@ -63,10 +83,10 @@ public class BreezometerService {
         List<AirQuality> originalAirQualityList = originalResponse.getMultipleAirQuality();
 
         AirQuality returnAirQuality;
-        if (!originalAirQualityList.isEmpty())
+        if (originalAirQualityList != null)
             returnAirQuality = originalAirQualityList.get(0);
         else
-            returnAirQuality = new AirQuality();
+            return originalResponse;
 
         return new Message(returnAirQuality, originalResponse.getDetail(), originalResponse.isSuccess());
     }

@@ -1,5 +1,6 @@
 package com.tqs1.api.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.tqs1.api.model.*;
@@ -27,12 +28,14 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,6 +67,8 @@ class ConditionsControllerIT {
     private String[] expectedUnits = {"ppb", "ppb"};
     private double[] expectedValue = {41.46, 171.91};
 
+    private BuildBreezometerLink linkBuilder;
+
     @Value("${breezometer.token}")
     private String breezometerToken;
 
@@ -86,7 +91,7 @@ class ConditionsControllerIT {
 
     @BeforeEach
     void setup() throws IOException, URISyntaxException {
-        BuildBreezometerLink linkBuilder = new BuildBreezometerLink(breezometerToken, breezometerAllFeatures);
+        linkBuilder = new BuildBreezometerLink(breezometerToken, breezometerAllFeatures);
         String json;
 
         // for current conditions test
@@ -310,6 +315,65 @@ class ConditionsControllerIT {
         testCoordinatesLimit(request, MAX_VALUE_COORDINATE + 1, MessageErrorDetails.MAX_COORDINATE_ERROR);
     }
 
+    @Test
+    void testConnectionLost() throws Exception {
+        // trigger exception when latitude and longitude are both equal to 70
+        when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 70, 70)))
+                .thenThrow(new UnknownHostException());
+
+        RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "70").param("lon", "70");
+
+        testReceiveErrorMessage(request, MessageErrorDetails.HOST_ERROR);
+    }
+
+    @Test
+    void testReceiveErrorFromBreezometer() throws Exception {
+        // trigger when latitude and longitude are both equal to 70
+        String messageDetail = "Invalid API key";
+        when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 70, 70)))
+                .thenReturn("{\n" +
+                        "    \"metadata\": null,\n" +
+                        "    \"data\": null,\n" +
+                        "    \"error\": {\n" +
+                        "        \"code\": \"invalid_api_key\",\n" +
+                        "        \"title\": \"" + messageDetail + "\",\n" +
+                        "        \"detail\": \"Provided API key is invalid. Check for accidental whitespace characters and note that the key is case sensitive\"\n" +
+                        "    }\n" +
+                        "}");
+
+        RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "70").param("lon", "70");
+
+        testReceiveErrorMessage(request, messageDetail);
+    }
+
+    @Test
+    void testReceiveStrangeResponse() throws Exception {
+        // trigger when latitude and longitude are both equal to 70
+        when(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 70, 70)))
+                .thenReturn("{\n" +
+                        "    \"ola\": \"ola\",\n" +
+                        "}");
+
+        RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "70").param("lon", "70");
+
+        testReceiveErrorMessage(request, MessageErrorDetails.REQUEST_ERROR);
+    }
+
+    @Test
+    void testUnexpectedErrorFromBreezometer() throws Exception {
+        // trigger when latitude and longitude are both equal to 70
+        given(httpClient.get(linkBuilder.createLinkString(BreezometerEndpoints.CURRENT_CONDITIONS, 70, 70)))
+                .willAnswer(invocationOnMock -> {throw new Exception();});
+
+        RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "70").param("lon", "70");
+
+        testReceiveErrorMessage(request, MessageErrorDetails.UNEXPECTED_ERROR);
+    }
+
     private void testHourlyConditionsJsonObject(RequestBuilder request) throws Exception {
 
         mvc.perform(request).andExpect(status().isOk())
@@ -369,12 +433,17 @@ class ConditionsControllerIT {
                 messageErrorDetails);
     }
 
-    private void testReceiveErrorMessage(RequestBuilder request, MessageErrorDetails expectedMessageErrorDetails) throws Exception {
+    private void testReceiveErrorMessage(RequestBuilder request, MessageErrorDetails expectedMessageErrorDetails)
+            throws Exception {
+        testReceiveErrorMessage(request, expectedMessageErrorDetails.getDetail());
+    }
+
+    private void testReceiveErrorMessage(RequestBuilder request, String errorMessage) throws Exception {
 
         mvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("$.airQuality", nullValue()))
                 .andExpect(jsonPath("$.multipleAirQuality", nullValue()))
-                .andExpect(jsonPath("$.detail", is(expectedMessageErrorDetails.getDetail())))
+                .andExpect(jsonPath("$.detail", is(errorMessage)))
                 .andExpect(jsonPath("$.success", is(false)));
     }
 }
