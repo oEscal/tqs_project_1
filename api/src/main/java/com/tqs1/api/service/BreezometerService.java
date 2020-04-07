@@ -2,6 +2,7 @@ package com.tqs1.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tqs1.api.model.AirQuality;
+import com.tqs1.api.model.Cache;
 import com.tqs1.api.model.Message;
 import com.tqs1.api.model.MessageErrorDetails;
 import org.apache.http.client.utils.URIBuilder;
@@ -32,7 +33,7 @@ public class BreezometerService {
     @Autowired
     private HttpClient httpClient;
 
-    public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours)
+    public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, int hours, Cache cache)
             throws URISyntaxException, IOException, ParseException {
 
         URIBuilder uriBuilder = new URIBuilder("https://api.breezometer.com/air-quality/v2/" + endpoint.getEndpoint());
@@ -42,9 +43,17 @@ public class BreezometerService {
         uriBuilder.addParameter("features", breezometerAllFeatures);
         uriBuilder.addParameter("hours", String.valueOf(hours));
 
+        Cache.ParametersEncapsulation parametersEncapsulation = new Cache.ParametersEncapsulation(latitude, longitude, hours);
+
         String response;
         try {
-             response = httpClient.get(uriBuilder.build().toString());
+            response = cache.getResponse(parametersEncapsulation);
+            if (response == null) {
+                response = httpClient.get(uriBuilder.build().toString());
+
+                // add to cache
+                cache.addResponse(parametersEncapsulation, response);
+            }
         } catch (UnknownHostException e) {
             return new Message(MessageErrorDetails.HOST_ERROR.getDetail(), false);
         } catch (Exception e) {
@@ -76,10 +85,10 @@ public class BreezometerService {
         return new Message(allAirQuality, "Success obtaining the requested information", true);
     }
 
-    public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude)
+    public Message requestApi(BreezometerEndpoints endpoint, double latitude, double longitude, Cache cache)
             throws ParseException, IOException, URISyntaxException {
 
-        Message originalResponse = requestApi(endpoint, latitude, longitude, 0);
+        Message originalResponse = requestApi(endpoint, latitude, longitude, 0, cache);
         List<AirQuality> originalAirQualityList = originalResponse.getMultipleAirQuality();
 
         AirQuality returnAirQuality;

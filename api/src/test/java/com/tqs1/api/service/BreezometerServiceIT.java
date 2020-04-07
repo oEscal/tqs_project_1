@@ -1,6 +1,7 @@
 package com.tqs1.api.service;
 
 import com.tqs1.api.model.AirQuality;
+import com.tqs1.api.model.Cache;
 import com.tqs1.api.model.Pollutant;
 import com.tqs1.api.model.PollutantConcentration;
 import com.tqs1.api.utils.BuildBreezometerLink;
@@ -57,6 +58,7 @@ class BreezometerServiceIT {
     @Value("${breezometer.all_features}")
     private String breezometerAllFeatures;
 
+    private Cache cache;
 
     @Autowired
     private BreezometerService breezometerService;
@@ -68,6 +70,8 @@ class BreezometerServiceIT {
 
     @BeforeEach
     void setup() throws URISyntaxException, IOException {
+
+        cache = new Cache();
 
         BuildBreezometerLink linkBuilder = new BuildBreezometerLink(breezometerToken, breezometerAllFeatures);
         String json;
@@ -111,7 +115,7 @@ class BreezometerServiceIT {
     void testCurrentConditionsRequest() throws ParseException, IOException, URISyntaxException {
 
         // get resultant data from the message returned
-        AirQuality returnedAirQuality = breezometerService.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, 10, 20)
+        AirQuality returnedAirQuality = breezometerService.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, 10, 20, cache)
                 .getAirQuality();
 
         // create a air quality object with two pollutants
@@ -131,7 +135,7 @@ class BreezometerServiceIT {
     private void testRequestHourly(BreezometerEndpoints endpoint) throws URISyntaxException, IOException, ParseException {
 
         // get resultant data from the message returned
-        List<AirQuality> returnedAirQualityList = breezometerService.requestApi(endpoint, 10, 20, 2)
+        List<AirQuality> returnedAirQualityList = breezometerService.requestApi(endpoint, 10, 20, 2, cache)
                 .getMultipleAirQuality();
 
         List<AirQuality> expectedAirQualityList = new ArrayList<>();

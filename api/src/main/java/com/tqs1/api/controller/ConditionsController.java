@@ -1,5 +1,6 @@
 package com.tqs1.api.controller;
 
+import com.tqs1.api.model.Cache;
 import com.tqs1.api.model.Message;
 import com.tqs1.api.model.MessageErrorDetails;
 import com.tqs1.api.service.BreezometerEndpoints;
@@ -22,6 +23,8 @@ public class ConditionsController {
     private static final int MAX_VALUE_COORDINATE = 90;
     private static final int MIN_VALUE_COORDINATE = -90;
 
+    @Autowired
+    private Cache cache;
 
     @Autowired
     private BreezometerService service;
@@ -35,7 +38,7 @@ public class ConditionsController {
         if (limitCoordinatesRange.length() > 0)
             return new Message(limitCoordinatesRange, false);
 
-        return service.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, lat, lon);
+        return service.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, lat, lon, cache);
     }
 
     @GetMapping("/forecast")
@@ -55,7 +58,7 @@ public class ConditionsController {
         if (hours > MAX_HOURS_FORECAST)
             return new Message(MessageErrorDetails.MAX_HOURS_FORECAST_ERROR.getDetail(), false);
 
-        return service.requestApi(BreezometerEndpoints.FORECAST_HOURLY, lat, lon, hours);
+        return service.requestApi(BreezometerEndpoints.FORECAST_HOURLY, lat, lon, hours, cache);
     }
 
     @GetMapping("/history")
@@ -75,7 +78,7 @@ public class ConditionsController {
         if (hours > MAX_HOURS_HISTORY)
             return new Message(MessageErrorDetails.MAX_HOURS_HISTORY_ERROR.getDetail(), false);
 
-        return service.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY, lat, lon, hours);
+        return service.requestApi(BreezometerEndpoints.HISTORICAL_HOURLY, lat, lon, hours, cache);
     }
 
     private String verifyLowLimitHoursRange(Integer hours) {
