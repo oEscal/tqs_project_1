@@ -1,5 +1,5 @@
 on: push
-name: Python lynt
+name: Python lint
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,7 +10,11 @@ jobs:
       with:
         python-version: 3.8
     - name: Install all dependencies
-      run: pip install --user -r $PATH/requirements.txt
+      run: |
+          for r in $(find . | grep requirements | grep web/); do
+            echo $r
+            pip install --user -r $r
+          done
       env:
         PATH: /web
     - name: Lint with flake8
