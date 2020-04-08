@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockReset;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -38,7 +39,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "breezometer.token=test_token")
 class ConditionsControllerIT {
 
@@ -90,9 +92,6 @@ class ConditionsControllerIT {
     @MockBean
     private HttpClient httpClient;
 
-    @MockBean
-    private Cache cache;
-
 
     @BeforeEach
     void setup() throws IOException, URISyntaxException {
@@ -134,7 +133,7 @@ class ConditionsControllerIT {
         RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
                 .param("lat", "10").param("lon", "20");
 
-        ResultActions resultActions = mvc.perform(request).andExpect(status().isOk())
+        mvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("$.airQuality.dominantPollutant", is(expectedPollutant[0])))
                 .andExpect(jsonPath("$.airQuality.pollutants", hasSize(2)))
                 .andExpect(jsonPath("$.airQuality.pollutants[*].simpleName", containsInAnyOrder(expectedSimpleName)))
@@ -160,6 +159,23 @@ class ConditionsControllerIT {
                 .param("lat", "10").param("lon", "20").param("hours", "2");
 
         testHourlyConditionsJsonObject(request);
+    }
+
+    @Test
+    void testCacheJsonObject() throws Exception {
+
+        // make a request (a hit)
+        RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20");
+        mvc.perform(request);
+
+        request = get("/cache").contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("$.requests", is(1)))
+                .andExpect(jsonPath("$.hits", is(0)))
+                .andExpect(jsonPath("$.misses", is(1)))
+                .andExpect(jsonPath("$.size", is(1)));
     }
 
     @Test
@@ -203,6 +219,60 @@ class ConditionsControllerIT {
                 .param("lat", "10").param("lon", "20").param("hours", "2");
 
         testHourlyAirQualityObject(request);
+    }
+
+    @Test
+    void testCacheObject() throws Exception {
+
+        // make a request (a hit)
+        RequestBuilder request;
+        for (int i = 0; i < 2; i++) {
+            request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                    .param("lat", "10").param("lon", "20");
+            mvc.perform(request);
+        }
+
+        request = get("/cache").contentType(MediaType.APPLICATION_JSON);
+        ResultActions resultActions = mvc.perform(request);
+
+        JsonElement jsonElement = gson.toJsonTree(
+                new JSONParser().parse(resultActions.andReturn().getResponse().getContentAsString()));
+        Cache response = gson.fromJson(jsonElement, Cache.class);
+        System.out.print(response);
+
+        // we cant se the resultant size on the resultant object because the endpoint never returns the cache's map
+        MatcherAssert.assertThat("Cache hits", response.getHits(), Matchers.is(1));
+        MatcherAssert.assertThat("Cache requests", response.getRequests(), Matchers.is(2));
+        MatcherAssert.assertThat("Cache misses", response.getMisses(), Matchers.is(1));
+    }
+
+    @Test
+    void testCacheIfExistsDontRequestBreezometer() throws Exception {
+
+        // we first make two equal requests
+        RequestBuilder request;
+        for (int i = 0; i < 2; i++) {
+            request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                    .param("lat", "10").param("lon", "20");
+            mvc.perform(request);
+        }
+
+        // the first time, the service must request breezometer api for the requested data, but the second time not
+        verify(httpClient, times(1)).get(anyString());
+    }
+
+    @Test
+    void testCacheIfDontExistRequestBreezometer() throws Exception {
+
+        // we first make two different requests
+        RequestBuilder request = get("/current").contentType(MediaType.APPLICATION_JSON)
+                    .param("lat", "10").param("lon", "20");
+        mvc.perform(request);
+        request = get("/history").contentType(MediaType.APPLICATION_JSON)
+                .param("lat", "10").param("lon", "20").param("hours", "2");
+        mvc.perform(request);
+
+        verify(httpClient, times(2)).get(anyString());
     }
 
     /**

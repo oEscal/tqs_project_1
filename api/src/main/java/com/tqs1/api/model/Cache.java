@@ -1,5 +1,6 @@
 package com.tqs1.api.model;
 
+import com.tqs1.api.service.BreezometerEndpoints;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
@@ -63,19 +64,33 @@ public class Cache {
         return this.savedResponses.size();
     }
 
+    @Override
+    public String toString() {
+        return "Cache{" +
+                "savedResponses=" + savedResponses +
+                ", maxSize=" + maxSize +
+                ", requests=" + requests +
+                ", hits=" + hits +
+                ", misses=" + misses +
+                '}';
+    }
+
 
     public static class ParametersEncapsulation {
 
+        private BreezometerEndpoints endpoint;
         private double latitude;
         private double longitude;
         private int hours;
 
-        public ParametersEncapsulation(double latitude, double longitude) {
+        public ParametersEncapsulation(BreezometerEndpoints endpoint, double latitude, double longitude) {
+            this.endpoint = endpoint;
             this.latitude = latitude;
             this.longitude = longitude;
         }
 
-        public ParametersEncapsulation(double latitude, double longitude, int hours) {
+        public ParametersEncapsulation(BreezometerEndpoints endpoint, double latitude, double longitude, int hours) {
+            this.endpoint = endpoint;
             this.latitude = latitude;
             this.longitude = longitude;
             this.hours = hours;
@@ -88,12 +103,23 @@ public class Cache {
             ParametersEncapsulation that = (ParametersEncapsulation) o;
             return Double.compare(that.latitude, latitude) == 0 &&
                     Double.compare(that.longitude, longitude) == 0 &&
-                    hours == that.hours;
+                    hours == that.hours &&
+                    endpoint == that.endpoint;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(latitude, longitude, hours);
+            return Objects.hash(endpoint, latitude, longitude, hours);
+        }
+
+        @Override
+        public String toString() {
+            return "ParametersEncapsulation{" +
+                    "endpoint=" + endpoint +
+                    ", latitude=" + latitude +
+                    ", longitude=" + longitude +
+                    ", hours=" + hours +
+                    '}';
         }
     }
 }

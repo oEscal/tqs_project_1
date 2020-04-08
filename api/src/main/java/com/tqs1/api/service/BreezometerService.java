@@ -43,7 +43,8 @@ public class BreezometerService {
         uriBuilder.addParameter("features", breezometerAllFeatures);
         uriBuilder.addParameter("hours", String.valueOf(hours));
 
-        Cache.ParametersEncapsulation parametersEncapsulation = new Cache.ParametersEncapsulation(latitude, longitude, hours);
+        Cache.ParametersEncapsulation parametersEncapsulation = new Cache.ParametersEncapsulation(
+                endpoint, latitude, longitude, hours);
 
         String response;
         try {
