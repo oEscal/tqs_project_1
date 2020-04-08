@@ -10,7 +10,9 @@ jobs:
       with:
         python-version: 3.8
     - name: Install all dependencies
-      run: pip install --user -r $(find . | grep requirements.txt)
+      run: pip install --user -r $PATH/requirements.txt
+      env:
+        PATH: web/
     - name: Lint with flake8
       run: |
         pip install flake8
