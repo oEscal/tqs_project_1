@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
+	response = {}
 	if request.method == 'POST':
-		print(request.form)
-	response = api_request("current", params_dict(lat=39.160489, lon=-8.548239))
+		response = api_request(request.form['type'], params_dict(lat=request.form['latitude'], lon=request.form['longitude']))
 	return render_template('hello.html', **response)
 
 
