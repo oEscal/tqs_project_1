@@ -15,7 +15,8 @@ class PollutantTest {
     private String simpleNameTest = "simple_name_test",
             fullNameTest = "full_name_test",
             colorTest = "color_test",
-            categoryTest = "category_test";
+            categoryTest = "category_test",
+            date = "date_test";
     private int scoreTest = 38;
     private PollutantConcentration pollutantConcentration = new PollutantConcentration(10.59, "unit_test");
 
@@ -95,7 +96,6 @@ class PollutantTest {
 
     @Test
     void testNotEqualsDifferentClass() {
-        String date = "date_test";
         AirQuality notExpected = new AirQuality(simpleNameTest, date, colorTest, categoryTest, scoreTest);
 
         assertThat(pollutant, not(notExpected));

@@ -9,18 +9,12 @@ import com.tqs1.api.utils.JsonSamples;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -40,7 +34,8 @@ class BreezometerServiceIT {
     // for air quality
     private String[] expectedColor = {"#96D62B", "#8AD130"},
             expectedCategory = {"Good air quality", "Excellent air quality"},
-            expectedPollutant = {"o3", "pm25"};
+            expectedPollutant = {"o3", "pm25"},
+            expectedDate = {"2020-04-13T04:00:00Z", "2020-05-13T04:00:00Z"};
     private int[] expectedScore = {67, 90};
 
     // for pollutants
@@ -78,8 +73,8 @@ class BreezometerServiceIT {
 
         // for current conditions test
         json = JsonSamples.jsonAirQualityOnePollutantData(expectedScore[0], expectedColor[0], expectedCategory[0],
-                expectedPollutant[0], expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
-                expectedPollutantCategory, expectedValue, expectedUnits);
+                expectedPollutant[0], expectedDate[0], expectedSimpleName, expectedFullName, expectedPollutantScore,
+                expectedPollutantColor, expectedPollutantCategory, expectedValue, expectedUnits);
         json = "{\n" +
                 "    \"metadata\": null,\n" +
                 "    \"data\": " + json + ",\n" +
@@ -90,8 +85,8 @@ class BreezometerServiceIT {
 
         // for hourly conditions test
         json = JsonSamples.jsonAirQualitySeveralPollutantData(expectedScore, expectedColor, expectedCategory,
-                expectedPollutant, expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
-                expectedPollutantCategory, expectedValue, expectedUnits);
+                expectedPollutant, expectedDate, expectedSimpleName, expectedFullName, expectedPollutantScore,
+                expectedPollutantColor, expectedPollutantCategory, expectedValue, expectedUnits);
         json = "{\n" +
                 "    \"metadata\": null,\n" +
                 "    \"data\": " + json  + ",\n" +
@@ -119,8 +114,7 @@ class BreezometerServiceIT {
                 .getAirQuality();
 
         // create a air quality object with two pollutants
-        String date = "date_test";
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], date, expectedColor[0], expectedCategory[0],
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedDate[0], expectedColor[0], expectedCategory[0],
                 expectedScore[0]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
@@ -142,8 +136,7 @@ class BreezometerServiceIT {
         List<AirQuality> expectedAirQualityList = new ArrayList<>();
 
         // add two air quality objects to list with two pollutants each
-        String date = "date_test";
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], date, expectedColor[0], expectedCategory[0],
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedDate[0], expectedColor[0], expectedCategory[0],
                 expectedScore[0]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
@@ -153,7 +146,7 @@ class BreezometerServiceIT {
                 new PollutantConcentration(expectedValue[1], expectedUnits[1])));
         expectedAirQualityList.add(expectedAirQuality);
 
-        expectedAirQuality = new AirQuality(expectedPollutant[1], date, expectedColor[1], expectedCategory[1],
+        expectedAirQuality = new AirQuality(expectedPollutant[1], expectedDate[1], expectedColor[1], expectedCategory[1],
                 expectedScore[1]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],

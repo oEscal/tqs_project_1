@@ -3,13 +3,13 @@ package com.tqs1.api.utils;
 public class JsonSamples {
 
     public static String jsonAirQualitySeveralPollutantData(int[] expectedScore, String[] expectedColor, String[] expectedCategory,
-                                                            String[] expectedPollutant, String[] expectedSimpleName,
+                                                            String[] expectedPollutant, String[] expectedDate, String[] expectedSimpleName,
                                                             String[] expectedFullName, int[] expectedPollutantScore,
                                                             String[] expectedPollutantColor, String[] expectedPollutantCategory,
                                                             double[] expectedValue, String[] expectedUnits) {
         return "[\n" +
         "        {\n" +
-                "            \"datetime\": \"2020-04-05T03:00:00Z\",\n" +
+                "            \"datetime\": \"" + expectedDate[0] + "\",\n" +
                 "            \"data_available\": true,\n" +
                 "            \"indexes\": {\n" +
                 "                \"baqi\": {\n" +
@@ -67,7 +67,7 @@ public class JsonSamples {
                 "            }\n" +
                 "        },\n" +
                 "        {\n" +
-                "            \"datetime\": \"2020-04-05T04:00:00Z\",\n" +
+                "            \"datetime\": \"" + expectedDate[1] + "\",\n" +
                 "            \"data_available\": true,\n" +
                 "            \"indexes\": {\n" +
                 "                \"baqi\": {\n" +
@@ -128,12 +128,12 @@ public class JsonSamples {
     }
 
     public static String jsonAirQualityOnePollutantData(int expectedScore, String expectedColor, String expectedCategory,
-                                                        String expectedPollutant, String[] expectedSimpleName,
+                                                        String expectedPollutant, String expectedDate, String[] expectedSimpleName,
                                                         String[] expectedFullName, int[] expectedPollutantScore,
                                                         String[] expectedPollutantColor, String[] expectedPollutantCategory,
                                                         double[] expectedValue, String[] expectedUnits) {
         return "{\n" +
-                "        \"datetime\": \"2020-04-04T16:00:00Z\",\n" +
+                "        \"datetime\": \"" + expectedDate + "\",\n" +
                 "        \"data_available\": true,\n" +
                 "        \"indexes\": {\n" +
                 "            \"baqi\": {\n" +

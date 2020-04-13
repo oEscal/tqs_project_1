@@ -14,9 +14,9 @@ class AirQualityTest {
     private AirQuality airQuality;
     private String dominantPollutantTest = "dominant_pollutant_test",
             colorTest = "color_test",
-            categoryTest = "category_test";
+            categoryTest = "category_test",
+            date = "date_test";
     private int scoreTest = 38;
-    private String date = "date_test";
 
     @BeforeEach
     void setUp() {

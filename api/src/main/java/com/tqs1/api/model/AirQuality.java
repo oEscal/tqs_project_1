@@ -53,7 +53,7 @@ public class AirQuality extends SimpleAirQuality {
         if (!super.equals(o)) return false;
         AirQuality that = (AirQuality) o;
         return Objects.equals(getDominantPollutant(), that.getDominantPollutant()) &&
-                Objects.equals(getPollutants(), that.getPollutants()) &&
+                Objects.equals(new HashSet<>(getPollutants()), new HashSet<>(that.getPollutants())) &&
                 Objects.equals(getDate(), that.getDate());
     }
 

@@ -21,7 +21,8 @@ class AirQualityDeserializerTest {
         // for air quality
         String expectedColor = "#96D62B",
                 expectedCategory = "Good air quality",
-                expectedPollutant = "03";
+                expectedPollutant = "03",
+                expectedDate = "2020-04-13T04:00:00Z";
         int expectedScore = 67;
 
         // for pollutants
@@ -34,11 +35,10 @@ class AirQualityDeserializerTest {
         double[] expectedValue = {41.46, 171.91};
 
         String json = JsonSamples.jsonAirQualityOnePollutantData(expectedScore, expectedColor, expectedCategory,
-                expectedPollutant, expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
-                expectedPollutantCategory, expectedValue, expectedUnits);
+                expectedPollutant, expectedDate, expectedSimpleName, expectedFullName, expectedPollutantScore,
+                expectedPollutantColor, expectedPollutantCategory, expectedValue, expectedUnits);
 
-        String date = "date_test";
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant, date, expectedColor, expectedCategory,
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant, expectedDate, expectedColor, expectedCategory,
                 expectedScore);
 
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
