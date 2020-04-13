@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 
-from utils import api_request, params_dict
+from utils import api_request, params_dict, pack_response
 
 app = Flask(__name__)
 
@@ -9,8 +9,17 @@ app = Flask(__name__)
 def hello_world():
 	response = {}
 	if request.method == 'POST':
-		response = api_request(request.form['type'], params_dict(lat=request.form['latitude'], lon=request.form['longitude']))
-	return render_template('hello.html', **response)
+		type_request = request.form['type']
+		response_raw = api_request(type_request, params_dict(
+			lat=request.form['latitude'], lon=request.form['longitude'], hours=request.form['hours']
+		))
+		if response_raw.status_code != 200:
+			response['success'] = False
+			response['detail'] = "There was an error contacting the API"
+		else:
+			response = pack_response(response_raw.json())
+			response['title'] = type_request[0].upper() + type_request[1:]
+	return render_template('index.html', **response)
 
 
 if __name__ == '__main__':
