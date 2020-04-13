@@ -8,7 +8,14 @@ $(document).ready(function() {
 
     // change type -> hours appear or disappear
     type_html.change(function () {
-        if (this.value === "forecast" || this.value === "history")
+        let hours_input = $("#hours");
+        if (this.value === "forecast" || this.value === "history"){
             hours_html.show();
+            hours_input.prop('required', true);
+        }
+        else {
+            hours_html.hide();
+            hours_input.prop('required', false);
+        }
     });
 });

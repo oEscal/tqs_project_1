@@ -61,13 +61,13 @@ public class BreezometerService {
             return new Message(MessageErrorDetails.UNEXPECTED_ERROR.getDetail(), false);
         }
 
-        // get parts from response till reaching the address
-        Object jsonData = ((JSONObject) new JSONParser().parse(response)).get("data");
-        JSONObject jsonError = (JSONObject) ((JSONObject) new JSONParser().parse(response)).get("error");
-
         List<AirQuality> allAirQuality = new ArrayList<>();
 
         try {
+            // get parts from response till reaching the address
+            Object jsonData = ((JSONObject) new JSONParser().parse(response)).get("data");
+            JSONObject jsonError = (JSONObject) ((JSONObject) new JSONParser().parse(response)).get("error");
+            
             // verify if API returned some error
             if (jsonError != null)
                 return new Message(jsonError.get("title").toString(), false);
