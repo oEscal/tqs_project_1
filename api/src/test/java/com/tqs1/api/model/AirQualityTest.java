@@ -44,6 +44,11 @@ class AirQualityTest {
     }
 
     @Test
+    void getDate() {
+        assertThat(airQuality.getDate(), is(date));
+    }
+
+    @Test
     void testNoPollutantAddedNoPollutantsOnAirQuality() {
         assertThat(airQuality.getPollutants(), empty());
     }
