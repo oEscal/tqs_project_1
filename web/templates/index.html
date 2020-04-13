@@ -57,6 +57,11 @@
         <div class="col-8 offset-2">
             <ul class="list-group">
                 <li class="list-group-item">
+                    <span class="font-weight-bolder">Date:</span>
+                    <span>{{ current_quality.date }}</span>
+                </li>
+
+                <li class="list-group-item">
                     <span class="font-weight-bolder">Air quality:</span>
                     <span style="color: {{ current_quality.airQualityColor }}">{{ current_quality.airQualityCategory }}</span>
                 </li>

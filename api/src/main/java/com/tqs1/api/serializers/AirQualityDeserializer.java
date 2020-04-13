@@ -33,12 +33,14 @@ public class AirQualityDeserializer extends StdDeserializer<AirQuality> {
 
         JsonNode airQualityNode = mainNode.get("indexes").get("baqi");
 
+        String date = mainNode.get("datetime").textValue();
         String dominantPollutant = airQualityNode.get("dominant_pollutant").textValue();
         String airQualityColor = airQualityNode.get("color").textValue();
         String airQualityCategory = airQualityNode.get("category").textValue();
         int airQualityScore = (Integer) ((IntNode) airQualityNode.get("aqi")).numberValue();
 
-        AirQuality airQuality = new AirQuality(dominantPollutant, airQualityColor, airQualityCategory, airQualityScore);
+        AirQuality airQuality = new AirQuality(dominantPollutant, date, airQualityColor, airQualityCategory,
+                airQualityScore);
 
         Iterator<JsonNode> pollutantNodes = mainNode.get("pollutants").elements();
         while(pollutantNodes.hasNext()) {

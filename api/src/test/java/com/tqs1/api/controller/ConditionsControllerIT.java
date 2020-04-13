@@ -191,7 +191,8 @@ class ConditionsControllerIT {
         Message response = gson.fromJson(jsonElement, Message.class);
 
         // create a air quality object with two pollutants
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedColor[0], expectedCategory[0],
+        String date = "date_test";
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], date, expectedColor[0], expectedCategory[0],
                 expectedScore[0]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
@@ -472,7 +473,8 @@ class ConditionsControllerIT {
         List<AirQuality> expectedAirQualityList = new ArrayList<>();
 
         // add two air quality objects to list with two pollutants each
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedColor[0], expectedCategory[0],
+        String date = "date_test";
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], date, expectedColor[0], expectedCategory[0],
                 expectedScore[0]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
@@ -482,7 +484,7 @@ class ConditionsControllerIT {
                 new PollutantConcentration(expectedValue[1], expectedUnits[1])));
         expectedAirQualityList.add(expectedAirQuality);
 
-        expectedAirQuality = new AirQuality(expectedPollutant[1], expectedColor[1], expectedCategory[1],
+        expectedAirQuality = new AirQuality(expectedPollutant[1], date, expectedColor[1], expectedCategory[1],
                 expectedScore[1]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],

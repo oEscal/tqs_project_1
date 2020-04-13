@@ -16,14 +16,17 @@ public class AirQuality extends SimpleAirQuality {
 
     private String dominantPollutant;
     private List<Pollutant> pollutants;
+    private String date;
+
 
     public AirQuality() {}
 
-    public AirQuality(String dominantPollutant, String airQualityColor, String airQualityCategory,
+    public AirQuality(String dominantPollutant, String date, String airQualityColor, String airQualityCategory,
                       int airQualityScore) {
         super(airQualityColor, airQualityCategory, airQualityScore);
 
         this.dominantPollutant = dominantPollutant;
+        this.date = date;
         this.pollutants = new ArrayList<>();
     }
 
@@ -39,6 +42,10 @@ public class AirQuality extends SimpleAirQuality {
         return dominantPollutant;
     }
 
+    public String getDate() {
+        return date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,19 +53,21 @@ public class AirQuality extends SimpleAirQuality {
         if (!super.equals(o)) return false;
         AirQuality that = (AirQuality) o;
         return Objects.equals(getDominantPollutant(), that.getDominantPollutant()) &&
-                Objects.equals(new HashSet<>(getPollutants()), new HashSet<>(that.getPollutants()));
+                Objects.equals(getPollutants(), that.getPollutants()) &&
+                Objects.equals(getDate(), that.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getDominantPollutant(), getPollutants());
+        return Objects.hash(super.hashCode(), getDominantPollutant(), getPollutants(), getDate());
     }
 
     @Override
     public String toString() {
         return "AirQuality{" +
-                "dominant_pollutant='" + dominantPollutant + '\'' +
+                "dominantPollutant='" + dominantPollutant + '\'' +
                 ", pollutants=" + pollutants +
+                ", date='" + date + '\'' +
                 "} " + super.toString();
     }
 }

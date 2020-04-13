@@ -16,10 +16,11 @@ class AirQualityTest {
             colorTest = "color_test",
             categoryTest = "category_test";
     private int scoreTest = 38;
+    private String date = "date_test";
 
     @BeforeEach
     void setUp() {
-        this.airQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest, scoreTest);
+        this.airQuality = new AirQuality(dominantPollutantTest, date, colorTest, categoryTest, scoreTest);
     }
 
     @Test
@@ -85,7 +86,7 @@ class AirQualityTest {
 
     @Test
     void testEqualsWithoutPollutants() {
-        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, date, colorTest, categoryTest,
                 scoreTest);
 
         assertThat(airQuality, is(expectedAirQuality));
@@ -93,7 +94,7 @@ class AirQualityTest {
 
     @Test
     void testEqualsWithPollutants() {
-        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, date, colorTest, categoryTest,
                 scoreTest);
 
         this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
@@ -114,7 +115,7 @@ class AirQualityTest {
 
     @Test
     void testEqualsWithPollutantsWithDifferentOrder() {
-        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+        AirQuality expectedAirQuality = new AirQuality(dominantPollutantTest, date, colorTest, categoryTest,
                 scoreTest);
 
         this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
@@ -129,7 +130,7 @@ class AirQualityTest {
 
     @Test
     void testNotEqualsSameAirQualityDifferentPollutants() {
-        AirQuality notExpectedAirQuality = new AirQuality(dominantPollutantTest, colorTest, categoryTest,
+        AirQuality notExpectedAirQuality = new AirQuality(dominantPollutantTest, date, colorTest, categoryTest,
                 scoreTest);
 
         this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",
@@ -144,7 +145,7 @@ class AirQualityTest {
 
     @Test
     void testNotEqualsDifferentAirQualitySamePollutants() {
-        AirQuality notExpectedAirQuality = new AirQuality("pollutant2", "color2",
+        AirQuality notExpectedAirQuality = new AirQuality("pollutant2", "date_test", "color2",
                 "category2", 50);
 
         this.airQuality.addPollutant(new Pollutant("simple_name_test", "full_name_test",

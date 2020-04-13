@@ -37,7 +37,8 @@ class AirQualityDeserializerTest {
                 expectedPollutant, expectedSimpleName, expectedFullName, expectedPollutantScore, expectedPollutantColor,
                 expectedPollutantCategory, expectedValue, expectedUnits);
 
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant, expectedColor, expectedCategory,
+        String date = "date_test";
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant, date, expectedColor, expectedCategory,
                 expectedScore);
 
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
