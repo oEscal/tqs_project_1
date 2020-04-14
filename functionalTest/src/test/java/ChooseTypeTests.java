@@ -10,6 +10,9 @@ import org.openqa.selenium.JavascriptExecutor;
 
 import java.util.*;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 
 public class ChooseTypeTests {
     private WebDriver driver;
@@ -57,5 +60,49 @@ public class ChooseTypeTests {
         // 4 | assertElementPresent | xpath=//input[@id='hours' and @required] |  |
         List<WebElement> elements = driver.findElements(By.xpath("//input[@id=\'hours\' and @required]"));
         assert (elements.size() > 0);
+    }
+
+    @Test
+    public void testSelectForecastThenCurrentDisappearHours() {
+
+        // 3 | select | id=type | value=forecast |
+        WebElement dropdown = driver.findElement(By.id("type"));
+        dropdown.findElement(By.cssSelector("*[value='forecast']")).click();
+
+        // 4 | select | id=type | value=current |
+        dropdown = driver.findElement(By.id("type"));
+        dropdown.findElement(By.cssSelector("*[value='current']")).click();
+
+        // 5 | assertElementNotPresent | xpath=//input[@id='hours' and @required] |  |
+        List<WebElement> elements = driver.findElements(By.xpath("//input[@id=\'hours\' and @required]"));
+        assert(elements.size() == 0);
+    }
+
+    @Test
+    public void testTypeForecastChooseCurrentDisappearHours() {
+
+        // 3 | select | id=type | value=forecast |
+        WebElement dropdown = driver.findElement(By.id("type"));
+        dropdown.findElement(By.cssSelector("*[value='history']")).click();
+
+        // 4 | select | id=type | value=current |
+        dropdown = driver.findElement(By.id("type"));
+        dropdown.findElement(By.cssSelector("*[value='current']")).click();
+
+        // 5 | assertElementNotPresent | xpath=//input[@id='hours' and @required] |  |
+        List<WebElement> elements = driver.findElements(By.xpath("//input[@id=\'hours\' and @required]"));
+        assert(elements.size() == 0);
+    }
+
+    @Test
+    public void testInitialConditions() {
+
+        // 3 | assertValue | id=type | current |
+        String value = driver.findElement(By.id("type")).getAttribute("value");
+        assertThat(value, is("current"));
+
+        // 4 | assertElementNotPresent | xpath=//input[@id='hours' and @required] |  |
+        List<WebElement> elements = driver.findElements(By.xpath("//input[@id=\'hours\' and @required]"));
+        assert(elements.size() == 0);
     }
 }
