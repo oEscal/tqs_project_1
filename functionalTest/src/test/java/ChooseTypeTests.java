@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 
 public class ChooseTypeTests {
+
     private WebDriver driver;
     JavascriptExecutor js;
 
