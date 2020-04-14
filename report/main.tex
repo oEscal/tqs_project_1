@@ -1,0 +1,65 @@
+\documentclass[11pt,oneside]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage[toc,page]{appendix}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{lipsum}
+\usepackage{caption}
+
+\begin{document}
+
+\captionsetup[figure]{margin=1.5cm,font=small,labelfont={bf},name={Figure},labelsep=colon,textfont={it}}
+\captionsetup[table]{margin=1.5cm,font=small,labelfont={bf},name={Table},labelsep=colon,textfont={it}}
+\setlipsumdefault{1}
+
+\frontmatter
+
+\begin{titlepage}
+
+
+% -------------------------------------------------------------------
+% You need to edit the details here
+% -------------------------------------------------------------------
+
+\begin{center}
+{\LARGE Universidade de Aveiro}\\[1.5cm]
+\linespread{1.2}\huge {\bfseries CMPXXXXX Module Title }\\[1.5cm]
+\linespread{1}
+% \includegraphics[width=7.5cm]{images/soc.png}\\[1cm]
+{\Large{Student Name : Student Number}}\\[1cm]
+\vspace*{\fill}
+\large{\today}
+\end{center}
+
+\end{titlepage}
+
+
+% -------------------------------------------------------------------
+% Contents
+% -------------------------------------------------------------------
+
+\tableofcontents
+
+
+
+% -------------------------------------------------------------------
+% Main sections (as required)
+% -------------------------------------------------------------------
+
+\mainmatter
+
+\input{sections/background}
+\input{sections/deisign}
+\input{sections/implementation}
+\input{sections/Security Considerations}
+
+
+% -------------------------------------------------------------------
+% Bibliography
+% -------------------------------------------------------------------
+
+\bibliographystyle{agsm} 
+\bibliography{mybibliography} 
+
+
+\end{document}
