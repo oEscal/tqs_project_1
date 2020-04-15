@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.4.14)  14 APR 2020 03:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.4.14)  15 APR 2020 05:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -259,21 +259,34 @@ Package caption3 Info: TeX engine: e-TeX on input line 64.
 )
 \c@caption@flags=\count188
 \c@ContinuedFloat=\count189
+) (/usr/share/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2019/10/16 v2.13 Sectioning titles
+\ttl@box=\box46
+\beforetitleunit=\skip51
+\aftertitleunit=\skip52
+\ttl@plus=\dimen152
+\ttl@minus=\dimen153
+\ttl@toksa=\toks16
+\titlewidth=\dimen154
+\titlewidthlast=\dimen155
+\titlewidthfirst=\dimen156
+) (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 ) (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -312,16 +325,16 @@ LaTeX Font Info:    ... okay on input line 9.
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count190
-\scratchdimen=\dimen152
-\scratchbox=\box46
+\scratchdimen=\dimen157
+\scratchbox=\box47
 \nofMPsegments=\count191
 \nofMParguments=\count192
-\everyMPshowfont=\toks16
+\everyMPshowfont=\toks17
 \MPscratchCnt=\count193
-\MPscratchDim=\dimen153
+\MPscratchDim=\dimen158
 \MPnumerator=\count194
 \makeMPintoPDFobject=\count195
-\everyMPtoPDFconversion=\toks17
+\everyMPtoPDFconversion=\toks18
 ) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
  (/usr/share/texmf-dist/tex/generic/oberdiek/infwarerr.sty
@@ -359,7 +372,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
 
-Package lipsum Warning: \setlipsumdefault on line 13
+Package lipsum Warning: \setlipsumdefault on line 26
 (lipsum)                \setlipsumdefault  should be substituted by
 (lipsum)                \SetLipsumDefault .
 
@@ -380,52 +393,40 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
  [1
 
-] (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/sections/background.tex
+] (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/sections/introduction.tex
 Chapter 1.
-) (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/sections/deisign.tex [1
-
-
-]
-Chapter 2.
-) (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/sections/implementation.tex [2
-
-]
-Chapter 3.
-) (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/sections/Security Considerations.tex [3
-
-]
-Chapter 4.
-) (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/main.bbl [4
-
-]
-
-Package natbib Warning: Empty `thebibliography' environment on input line 3.
-
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 23.
+(/usr/share/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 23.
 )
 
-Package caption Warning: Unused \captionsetup[figure] on input line 11.
+Package caption Warning: Unused \captionsetup[figure] on input line 24.
 See the caption package documentation for explanation.
 
 
-Package caption Warning: Unused \captionsetup[table] on input line 12.
+Package caption Warning: Unused \captionsetup[table] on input line 25.
 See the caption package documentation for explanation.
 
-[5
+[1
+
 
 ] (/home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/main.aux) ) 
 Here is how much of TeX's memory you used:
- 13790 strings out of 492167
- 259898 string characters out of 6131558
- 555208 words of memory out of 5000000
- 18091 multiletter control sequences out of 15000+600000
- 537799 words of font info for 42 fonts, out of 8000000 for 9000
+ 14092 strings out of 492167
+ 263144 string characters out of 6131558
+ 447478 words of memory out of 5000000
+ 18391 multiletter control sequences out of 15000+600000
+ 538245 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  46i,4n,67p,344b,317s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on /home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/main.pdf (7 pages, 69738 bytes).
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on /home/escaleira/Desktop/ano3/semestre2/TQS/projects/tqs_project_1/report/main.pdf (3 pages, 109906 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 33 compressed objects within 1 object stream
+ 50 PDF objects out of 1000 (max. 8388607)
+ 35 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

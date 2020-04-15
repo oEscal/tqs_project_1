@@ -6,6 +6,19 @@
 \usepackage{lipsum}
 \usepackage{caption}
 
+% disable chapter default name
+\usepackage{titlesec}
+\titleformat{\chapter}{\normalfont\huge}{\thechapter.}{20pt}{\huge}
+
+
+% change the title of the table of contents
+\renewcommand{\contentsname}{Indice}
+
+% paragraph spacing
+\usepackage{indentfirst}
+\setlength{\parindent}{3em}
+
+
 \begin{document}
 
 \captionsetup[figure]{margin=1.5cm,font=small,labelfont={bf},name={Figure},labelsep=colon,textfont={it}}
@@ -22,11 +35,11 @@
 % -------------------------------------------------------------------
 
 \begin{center}
-{\LARGE Universidade de Aveiro}\\[1.5cm]
-\linespread{1.2}\huge {\bfseries CMPXXXXX Module Title }\\[1.5cm]
+{\LARGE Universidade de Aveiro}\\[7cm]
+\linespread{1.2}\huge {\bfseries HW1: Mid-term assignment report }\\[0.5cm]
 \linespread{1}
 % \includegraphics[width=7.5cm]{images/soc.png}\\[1cm]
-{\Large{Student Name : Student Number}}\\[1cm]
+{\large{Pedro Miguel Nicolau Escaleira \textit{[88821]} }}\\[1cm]
 \vspace*{\fill}
 \large{\today}
 \end{center}
@@ -48,18 +61,6 @@
 
 \mainmatter
 
-\input{sections/background}
-\input{sections/deisign}
-\input{sections/implementation}
-\input{sections/Security Considerations}
-
-
-% -------------------------------------------------------------------
-% Bibliography
-% -------------------------------------------------------------------
-
-\bibliographystyle{agsm} 
-\bibliography{mybibliography} 
-
+\input{sections/introduction}
 
 \end{document}

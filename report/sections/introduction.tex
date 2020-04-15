@@ -1,0 +1,37 @@
+% !TEX root = ../main.tex
+
+\chapter{Introdução}
+
+\section{Contextualização do trabalho}
+Este projeto, proposto pelo professor da disciplina de \textbf{Teste e Qualidade de Software}, teve como
+principal objetivo a consolidação dos conhecimentos adquiridos durante as aulas da mesma tidas até ao momento.
+
+Desta forma, foi sugerida a criação duma aplicação \textit{web} simples para obtenção de dados sobre a 
+qualidade do ar num dado sitio fornecido. Para isso, a solução criada possui um \textit{back-end} sob a forma de 
+\textit{REST API}, feita em \textit{java} com a ajuda de \textit{Spring Boot} e um \textit{fron-end} feito em 
+\textit{python} com a ajuda de \textit{Flask} e \textit{Jinja 2}. Fazendo jus ao nome da disciplina, claramente
+toda esta plataforma foi criada com o intuito de serem feitos testes, a vários níveis, para a mesma, pelo que foi,
+duma forma geral, usado o \textit{JUnit} para a criação de testes para a \textit{api} e \textit{Selenium WebDriver}
+para a criação de testes para a interface.
+
+\section{Limitações}
+Apesar do trabalho ter sido concluído com sucesso e de ter ido de encontro aos requisitos pedidos, 
+houveram algumas \textit{features} que ficaram por implementar, mas que teriam sido uma adição que o autor
+gostaria de ter criado. De seguida, são apresentadas as principais:
+
+\begin{itemize}
+   \item \textbf{Pesquisa dum lugar pelo nome}: no resultado final, apenas dá para pesquisar a qualidade de 
+ar quando dadas as coordenadas da localização pretendida. Contudo, seria mais \textit{user friendly} fazer a mesma
+pesquisa por nome.
+   \item \textbf{Utilização doutra \textit{API} remota}: na solução final, apenas é usada um serviço remoto para
+obtenção dos dados necessários. Contudo, tal como é sugerido nos pontos extra do guião do trabalho, seria mais
+\textit{reliable} a utilização de mais que um serviço, para o caso do primeiro falhar. Esta aproximação não foi usada
+já que iria adicionar uma grande quantidade de sobrecarga sobre o trabalho feito dada a dificuldade desta adição 
+quando concluído grande parte do código feito.
+   \item \textbf{Testes da interface em que houvesse alteração do código \textit{HTML}}: Seria algo de interesse de se
+fazer testes, por exemplo, sob \textit{inputs} com atributos alterados, para testar o comportamento da plataforma
+quando não apresentada, por exemplo, uma entrada na forma de número ou a submissão do formulário sem quaisquer 
+\textit{inputs} obrigatórios preenchidos. Contudo, após alguma pesquisa, o \textit{Selenium IDE}, ferramenta usada
+na criação dos testes da interface, não parece apresentar documentação de como fazer alterações no código fonte da
+página testada.
+\end{itemize}
