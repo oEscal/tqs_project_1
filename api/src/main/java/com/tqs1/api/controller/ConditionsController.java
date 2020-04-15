@@ -5,6 +5,7 @@ import com.tqs1.api.model.Message;
 import com.tqs1.api.model.MessageErrorDetails;
 import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.BreezometerService;
+import io.swagger.annotations.Api;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import java.net.URISyntaxException;
 
 
 @RestController
+@Api(value="Conditions end-points")
 public class ConditionsController {
 
     private static final int MAX_HOURS_FORECAST = 95;
