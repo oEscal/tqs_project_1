@@ -19,7 +19,7 @@ import java.net.URISyntaxException;
 
 
 @RestController
-@Api(value="Conditions end-points")
+@Api(value="Conditions endpoints")
 public class ConditionsController {
 
     private static final int MAX_HOURS_FORECAST = 95;

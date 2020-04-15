@@ -121,4 +121,42 @@ De maneira a obter os dados necessários sobre a qualidade do ar, foi necessári
 
 
 \section{API para desenvolvedores}
+Como já explicado múltiplas vezes ao longo deste relatório, o serviço criado permite obter informações sobre a qualidade do ar presente, passada ou futura, sendo que para isso utiliza um serviço externo para obter as informações necessárias. Assim, a \textit{API} criada possui 4 \textit{endpoints}:
 
+\begin{itemize}
+   \item \textbf{\textit{/current}}:
+      \begin{itemize}
+         \item Permite obter a qualidade do ar atual.
+         \item Parâmetros:
+            \begin{itemize}
+               \item \textbf{\textit{lat}}: número decimal representante da latitude do lugar pretendido.
+               \item \textbf{\textit{lon}}: número decimal representante da longitude do lugar pretendido.
+            \end{itemize}
+      \end{itemize}
+   \item \textbf{\textit{/forecast}}:
+      \begin{itemize}
+         \item Permite obter a previsão da qualidade do ar até 95 horas futuras.
+         \item Parâmetros:
+            \begin{itemize}
+               \item \textbf{\textit{lat}}: número decimal representante da latitude do lugar pretendido.
+               \item \textbf{\textit{lon}}: número decimal representante da longitude do lugar pretendido.
+               \item \textbf{\textit{hours}}: número inteiro representante da número de horas pretendidas.
+            \end{itemize}
+      \end{itemize}
+   \item \textbf{\textit{/history}}:
+      \begin{itemize}
+         \item Permite obter o histórico da qualidade do ar até 168 horas passadas.
+         \item Parâmetros:
+            \begin{itemize}
+               \item \textbf{\textit{lat}}: número decimal representante da latitude do lugar pretendido.
+               \item \textbf{\textit{lon}}: número decimal representante da longitude do lugar pretendido.
+               \item \textbf{\textit{hours}}: número inteiro representante da número de horas pretendidas.
+            \end{itemize}
+      \end{itemize}
+   \item \textbf{\textit{/cache}}:
+      \begin{itemize}
+         \item Permite obter as estatísticas da cache usada (\textit{requests}, \textit{hits}, \textit{misses} e \textit{size}).
+      \end{itemize}
+\end{itemize}
+
+Para informação mais detalhada sobre cada endpoint, pode ser acedida a página \url{http://localhost:8080/swagger-ui.html#/} (se a \textit{API} for iniciada em \textbf{\textit{localhost}} e na porta \textbf{8080}).
