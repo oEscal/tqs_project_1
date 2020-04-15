@@ -54,6 +54,11 @@ a sua complexidade em 4 \textit{packages}: \textbf{controller}, \textbf{model}, 
 
 
 \subsection{Package controller}
+Este \textit{package} é constituído apenas por uma classe, \textbf{\textit{ConditionsController}}, que é
+a responsável por lidar com as ligações feitas à \textit{API} criada. Desta forma, nesta classes são
+definidos os \textit{endpoints} do nosso serviço e é definida a forma como cada \textit{request} vai ser
+consumido no \textit{back-end}. Na figura \ref{fig:controller_diagram} é possível encontrar o esquema da
+classe descrita.
 
 \begin{figure}[h]
    \centering
@@ -64,6 +69,27 @@ a sua complexidade em 4 \textit{packages}: \textbf{controller}, \textbf{model}, 
 
 
 \subsection{Package model}
+Todas as entidades usadas pelo nosso servido são representadas pelas classes deste \textit{package}. Desta forma, nela estão incluídas as classes:
+\begin{itemize}
+   \item \textbf{Que representam os dados da qualidade do ar}: 
+      \begin{itemize}
+         \item \textbf{\textit{AirQuality}}: representa a qualidade do ar referente a um determinado momento. Sendo assim, para além dos objetos desta classe possuírem informações básicas sobre a qualidade do ar, contêm também uma lista de poluentes (classe \textbf{\textit{Pollutant}}) que se encontram no ar no instante que esse objeto retrata.
+         \item \textbf{\textit{Pollutant}}: classe que contém informações sobre um determinado poluente, como a forma como o respetivo poluente afeta a qualidade do ar e a concentração deste num determinado momento (classe \textbf{\textit{PollutantConcentration}}).
+         \item \textbf{\textit{PollutantConcentration}}: classe que representa a informação da concentração dum poluente.
+      \end{itemize}
+   \item \textbf{Que modelam o sistema de cache}:
+      \begin{itemize}
+         \item \textbf{\textit{Cache}}: classe que permite criar objetos que simulam um sistema de cache simples e com as respetivas métricas (como o tamanho da cache ou o número de \textit{hits} e \textit{misses}). Por \textit{default}, os objetos de cache criados possuem um tamanho máximo determinado pelo valor da constante \textit{DEFAULT\_MAX\_SIZE}, sendo que quando o tamanho dela chega a esse tamanho máximo, os dados mais antigos são excluídos.
+         \item \textbf{\textit{ParametersEncapsulation}}: classe que permite fazer o encapsulamento dos parâmetros sobre os quais se pretende armazenar a resposta dada pelo serviço externo na cache, isto é, quando é feito um pedido da qualidade do ar ao serviço externo, com uma determinada latitude, longidute, tipo de resposta (\textit{current}, \textit{history} ou \textit{forecast}) e possivelmente um número de horas, o resultado deste pedido pode ser armazenado na cache com um identificador representado pelo encapsulamento destes parâmetros.
+      \end{itemize}
+   \item \textbf{Ligadas às mensagens criadas pelo serviço}:
+      \begin{itemize}
+         \item \textbf{\textit{Message}}: classe que permite encapsular a resposta dada pela \textit{API} a um determinado pedido feito. Desta forma, ela tem um campo de sucesso, um de detalhes (para mensagens de sucesso ou erro), um da qualidade de ar (quando é feito um pedido da atual) e de uma lista de várias medições da qualidade do ar (quando é feito um pedido sobre os dados do passado ou futuro).
+         \item \textbf{\textit{MessageErrorDetails}}: enumerável com as várias mensagens de erro que podem ser devolvidas pela mensagem enviada pela \textit{API}.
+      \end{itemize}
+\end{itemize}
+
+Na figura \ref{fig:model_diagram} é possível verificar a constituição e relações entre cada uma destas classes.
 
 \begin{figure}[h]
    \centering
