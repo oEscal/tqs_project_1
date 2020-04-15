@@ -3,3 +3,16 @@
 \chapter{Garantia de qualidade}
 
 \section{Estratégia geral usada para os testes}
+Duma forma geral, a estratégia usada para fazer os testes foi usar \textit{TDD}, \textit{Test Driven Development}, e \textit{TLD}, \textit{Test Last Development}. Foi dado um especial destaque ao uso da primeira, como tentativa de mudar o hábito de fazer testes só depois de fazer todo o código, e aprender uma técnica de desenvolvimento de código aconselhada e que permite criar código fácilmente mantido. Contudo, foi impossível mudar completamente, e num só projeto, este \textit{mindset}. A ultima, apesar de não tão recomendada como a primeira, permite fazer código mais rápidamente e mais simples, numa primeira fase, mas alterações futuras são mais difíceis de serem feitas.
+
+Quando usado \textit{TDD}, usualmente a classe sob a qual era pretendido serem feitos testes unitários foi criada primeiro, com toda a estrutura suposta e, posteriormente, foram criados os respetivos testes. Quando completada a criação destes, todo o código da respetiva classe era analisado, de forma a criar as \textit{features} supostas para que os testes passassem.
+
+Para código mais complexo, foi usado \textit{TLD}, já que seria extremamente difícil de criar testes para algo que não se sabia inicialmente o comportamento. Muitas vezes, o código inicial deste tipo de classes foi feito mais como protótipo, de seguida criados testes para o comportamento que era esperado quando tudo funciona-se devidamente e por ultimo, melhorado o código desses protótipos de forma a criar classes com um comportamento adequado para o produto final.
+
+É de sublinhar que não foi usada nenhuma abordagem \textit{BDD}.
+
+Quanto a ferramentas usadas, para além do \textit{JUnit}, foi usado \textit{Mockito}, de forma a simular o comportamento de certos integrantes, e \textit{MockMvc} do \textit{Spring Boot}, de forma a simular os pedidos à \textit{API} criada e a obter as respetivas respostas.
+
+
+\section{Testes unitários e de integração}
+
