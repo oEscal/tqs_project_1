@@ -100,7 +100,7 @@ Na figura \ref{fig:model_diagram} é possível verificar a constituição e rela
 
 
 \subsection{Package serializers}
-
+De forma a poder fazer a "tradução" entre os dados recebidos do serviço externo e algumas das classes do \textit{model}, foram criados alguns \textit{deserializers} para esse efeito, como é possível verificar no diagrama da figura \ref{fig:serializers_diagram}. Para isso, foi usada a livraria \textit{Jackson}.
 \begin{figure}[h]
    \centering
    \includegraphics[width=0.90\textwidth]{images/serializers_diagram}
@@ -110,6 +110,8 @@ Na figura \ref{fig:model_diagram} é possível verificar a constituição e rela
 
 
 \subsection{Package service}
+De maneira a obter os dados necessários sobre a qualidade do ar, foi necessário criar um elo de ligação entre o \textit{back-end} criado e o serviço externo usado (\textit{BreezoMeter}), pelo que neste \textit{package} se encontram as classes que o permitem fazer. Quando a \textit{API} recebe um determinado pedido (excluindo o das estatísticas da cache), o método da classe \textbf{\textit{ConditionsController}} responsável por tratar do pedido "chama" o método \textit{requestApi} da classe \textbf{\textit{ConditionsController}} deste \textit{package} com o respetivo pedido, sendo que esta ultima faz um pedido ao serviço externo usando a classe \textbf{\textit{HttpBasic}} (disponibilizada pelo professor da disciplina numa das aulas práticas). A resposta do serviço externo é de seguida processada pelos \textit{deserializers} já descritos anteriormente e o objeto ou lista de objetos da classe \textbf{\textit{AirQuality}} são retornados ao método do \textit{controller} que tinha feito o pedido, encapsulados sob a forma dum objeto da classe \textbf{\textit{Message}}.
+Na figura \ref{fig:service_diagram} é possível encontrar a estrutura interna das classes deste \textit{package}.
 
 \begin{figure}[h]
    \centering
