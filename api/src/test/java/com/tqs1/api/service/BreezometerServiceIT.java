@@ -110,12 +110,12 @@ class BreezometerServiceIT {
     void testCurrentConditionsRequest() throws ParseException, IOException, URISyntaxException {
 
         // get resultant data from the message returned
-        AirQuality returnedAirQuality = breezometerService.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, 10, 20, cache)
-                .getAirQuality();
+        AirQuality returnedAirQuality = breezometerService.requestApi(BreezometerEndpoints.CURRENT_CONDITIONS, 10,
+                20, cache).getAirQuality();
 
         // create a air quality object with two pollutants
-        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedDate[0], expectedColor[0], expectedCategory[0],
-                expectedScore[0]);
+        AirQuality expectedAirQuality = new AirQuality(expectedPollutant[0], expectedDate[0], expectedColor[0],
+                expectedCategory[0], expectedScore[0]);
         expectedAirQuality.addPollutant(new Pollutant(expectedSimpleName[0], expectedFullName[0],
                 expectedPollutantColor[0], expectedPollutantCategory[0], expectedPollutantScore[0],
                 new PollutantConcentration(expectedValue[0], expectedUnits[0])));

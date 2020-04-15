@@ -134,8 +134,10 @@ class ConditionsControllerIT {
         mvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("$.airQuality.dominantPollutant", is(expectedPollutant[0])))
                 .andExpect(jsonPath("$.airQuality.pollutants", hasSize(2)))
-                .andExpect(jsonPath("$.airQuality.pollutants[*].simpleName", containsInAnyOrder(expectedSimpleName)))
-                .andExpect(jsonPath("$.airQuality.pollutants[*].concentration.value", containsInAnyOrder(expectedValue[0], expectedValue[1])))
+                .andExpect(jsonPath("$.airQuality.pollutants[*].simpleName",
+                        containsInAnyOrder(expectedSimpleName)))
+                .andExpect(jsonPath("$.airQuality.pollutants[*].concentration.value",
+                        containsInAnyOrder(expectedValue[0], expectedValue[1])))
                 .andExpect(jsonPath("$", hasKey("detail")))
                 .andExpect(jsonPath("$.multipleAirQuality", nullValue()))
                 .andExpect(jsonPath("$.success", is(true)));

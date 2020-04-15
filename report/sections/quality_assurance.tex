@@ -52,3 +52,44 @@ Um exemplo dum destes testes pode ser encontrado na figura \ref{fig:serializer_t
    \caption{Exemplo do código de teste do deserializer \textbf{\textit{PollutantConcentrationDeserializer}}.}
    \label{fig:serializer_test}
 \end{figure}
+
+
+\subsection{Testes de integração}
+\subsubsection{Serviço}
+Sendo que a classe \textbf{\textit{BreezometerService}} se liga a serviços externos e usa uma grande quantidade de componentes criados, foi necessário fazer alguns testes de integração para verificar se todas as partes funcionavam devidamente em conjunto. Para isso, foi dado uso ao \textit{MockBean} do \textit{Spring Boot}, de forma a simular o comportamento da interface \textbf{\textit{HttpClient}} e para, desta maneira, emular os resultados obtidos quando são feitos pedidos ao serviço externo. Um exemplo da configuração duma destas representações é demonstrada na imagem da figura \ref{fig:mock_http_client}, onde é obtida uma \textit{string json} com os parâmetros pretendidos através da utilização do método \textit{jsonAirQualityOnePollutantData} da classe \textbf{\textit{JsonSamples}} e se indica que, quando é feito um pedido ao à \textit{API} do \textit{BreezoMeter} dos dados da qualidade do ar atuais, para a latitude 10 e longitude 20, esta string deve ser retornada.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/mock_http_client}
+   \caption{Exemplo duma simulação feita sob a interface \textbf{\textit{HttpClient}}, de forma a que esta dê uma dada resposta quando for feito um pedido especifico.}
+   \label{fig:mock_http_client}
+\end{figure}
+
+Os testes desta classe passaram essencialmente por testar se quando feito um dado pedido, foi retornado o objeto da classe \textbf{\textit{Message}} suposto. Um exemplo dum destes testes pode ser consultado na imagem da figura \ref{fig:test_service}, onde é feito um pedido ao serviço \textbf{\textit{BreezometerService}} e é verificado se este retorna a mensagem suposta.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/test_service}
+   \caption{Exemplo dum teste para verificação se quando feito um dado pedido ao serviço externo, o \textbf{\textit{BreezometerService}} retorna o pretendido.}
+   \label{fig:test_service}
+\end{figure}
+
+
+\subsubsection{Controlador}
+Pelo facto de na classe \textbf{\textit{ConditionsController}} se encontrarem todos os \textit{endpoints} e as especificações dos trabalhos a serem feitos quando é recebido um dado pedido na \textit{API}, foi necessário fazer uma grande quantidade de testes de integração sob esta classe, já que é ela que desencadeia a utilização de todas as outras classes criadas no projeto. Mais uma vez, foi usada a anotação \textit{MockBean} para permitir simular o comportamento da interface \textbf{\textit{HttpClient}}.
+
+Posto isto, foram feitos testes não só para verificar se os vários métodos desta classe retornavam a mensagem da classe \textbf{\textit{Message}} devida, como também foram testadas as respostas dadas em \textit{json}, para confirmar que os resultados produzidos tinham a formatação esperada. Foram também induzidos erros quer nas respostas dadas pelo serviço externo, quer erros de execução inesperados, para confirmar se a \textit{API} tinha a capacidade de retornar as devidas mensagens de erro ou sucesso.
+
+Para além de testes mais voltados para a interação com o serviço externo, foi também testado o serviço de cache usado, de forma a confirmar que quando feito um determinado conjunto de \textit{requests} à \textit{API}, os valores devolvidos quando pedidas as estatísticas da cache batiam certo.
+
+Na figura \ref{fig:controller_test} é demonstrado um dos testes feitos, neste caso para confirmação de que o \textit{json} retornado quando feito um pedido das condições atuais possuía os valores e parâmetros corretos.
+
+\begin{figure}[t]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/controller_test}
+   \caption{Exemplo dum teste feito à classe \textbf{\textit{ConditionsController}}, de forma a verificar se a resposta \textit{json} era a esperada para o pedido feito.}
+   \label{fig:controller_test}
+\end{figure}
+
+
+\section{Testes funcionais}
