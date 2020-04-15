@@ -28,36 +28,6 @@ class PollutantTest {
     }
 
     @Test
-    void testGetSimple_name() {
-        assertThat(pollutant.getSimpleName(), is(simpleNameTest));
-    }
-
-    @Test
-    void testGetFull_name() {
-        assertThat(pollutant.getFullName(), is(fullNameTest));
-    }
-
-    @Test
-    void testGetConcentration() {
-        assertThat(pollutant.getConcentration(), is(pollutantConcentration));
-    }
-
-    @Test
-    void testGetAir_quality_category() {
-        assertThat(pollutant.getAirQualityCategory(), is(categoryTest));
-    }
-
-    @Test
-    void testGetAir_quality_color() {
-        assertThat(pollutant.getAirQualityColor(), is(colorTest));
-    }
-
-    @Test
-    void testGetAir_quality_score() {
-        assertThat(pollutant.getAirQualityScore(), is(scoreTest));
-    }
-
-    @Test
     void testEqualsDifferentObjects() {
         Pollutant expectedPollutant = new Pollutant(simpleNameTest, fullNameTest, colorTest, categoryTest,
                 scoreTest, pollutantConcentration);

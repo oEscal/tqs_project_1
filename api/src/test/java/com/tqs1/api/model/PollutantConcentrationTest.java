@@ -21,16 +21,6 @@ class PollutantConcentrationTest {
     }
 
     @Test
-    void testGetValue() {
-        assertThat(pollutantConcentration.getValue(), is(testValue));
-    }
-
-    @Test
-    void testGetUnits() {
-        assertThat(pollutantConcentration.getUnits(), is(testUnit));
-    }
-
-    @Test
     void testEqualsDifferentObjects() {
         PollutantConcentration expectedPollutantConcentration = new PollutantConcentration(testValue, testUnit);
 

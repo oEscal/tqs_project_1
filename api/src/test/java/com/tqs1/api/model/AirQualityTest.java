@@ -24,31 +24,6 @@ class AirQualityTest {
     }
 
     @Test
-    void getAir_quality_color() {
-        assertThat(airQuality.getAirQualityColor(), is(colorTest));
-    }
-
-    @Test
-    void getAir_quality_category() {
-        assertThat(airQuality.getAirQualityCategory(), is(categoryTest));
-    }
-
-    @Test
-    void getAir_quality_score() {
-        assertThat(airQuality.getAirQualityScore(), is(scoreTest));
-    }
-
-    @Test
-    void getDominant_pollutant() {
-        assertThat(airQuality.getDominantPollutant(), is(dominantPollutantTest));
-    }
-
-    @Test
-    void getDate() {
-        assertThat(airQuality.getDate(), is(date));
-    }
-
-    @Test
     void testNoPollutantAddedNoPollutantsOnAirQuality() {
         assertThat(airQuality.getPollutants(), empty());
     }
