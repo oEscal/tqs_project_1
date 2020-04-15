@@ -15,4 +15,40 @@ Quanto a ferramentas usadas, para além do \textit{JUnit}, foi usado \textit{Moc
 
 
 \section{Testes unitários e de integração}
+Numa primeira fase, foram criados testes unitários para cada os modelos principais e para os \textit{deserializers}. Posteriormente, foram feitos testes de integração quer ao serviço responsável por fazer a ligação ao serviço externo, quer ao controlador. Nas subsecções seguintes é explicado, duma forma geral, os testes feitos de cada tipo.
 
+\subsection{Testes unitários}
+\subsubsection{Modelos}
+Quanto aos modelos, foram criados testes unitários para as classes \textbf{\textit{AirQuality}}, \textbf{\textit{Cache}}, \textbf{\textit{Pollutant}} e \textbf{\textit{PollutantConcentration}}, já que são os modelos que estão na base do negócio. Não foram criados testes para os restantes pelo simples motivo de que não apresentavam nenhum comportamento de risco, isto é, não têm nenhuma especificação que possa provocar erros no projeto, já que são apenas \textit{wrappers}, um das possíveis mensagens de erro e outro duma mensagem em si. 
+Para as classes, foram feitos testes sobre o comportamento do método \textit{equals}, já que este foi modificado em todas as classes e em algumas, foi alterado o código auto-gerado pelo \textit{IDE}. Claro que noutras o código gerado pelo \textit{IDE} não foi alterado, mas poderia ser no futuro dado a utilização que foi dada a estas classes, pelo que se decidiu que era o melhor a ser feito de forma a controlar possíveis problemas.
+Para além disso, sendo que a classe \textbf{\textit{AirQuality}} possuía um método que permitia adicionar novos poluentes em momentos distintos, isto é, não se tratava dum simples \textit{addPollutants}, onde seria dada a lista de poluentes toda, foram também feitos testes de forma a controlar o comportamento da adição de novos poluentes ou da não adição dos mesmos (exemplo dum destes testes na figura \ref{fig:air_pollutant_test}, onde é verificada se a ordem com que cada poluente é adicionado à qualidade do ar não afeta que duas qualidades do ar sejam diferentes).
+
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/air_pollutant_test}
+   \caption{Exemplo dum código de teste da adição de poluentes a um objeto da classe \textbf{\textit{AirQuality}}.}
+   \label{fig:air_pollutant_test}
+\end{figure}
+
+Já para a classe \textbf{\textit{Cache}}, sendo que esta apresentava um comportamento muito distinto das outras, foram criados testes diferentes. Principalmente testes que verificaram o tamanho da cache após excedido o tamanho máximo desta (exemplo do código em \ref{fig:cache_max}\footnote{no inicio de cada teste da cache são adicionados dois novos elementos, pelo que, ao todo, foram adicionados 4 elementos}), testes das condições iniciais e testes dos valores de cada uma das métricas de estatística.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/cache_max}
+   \caption{Exemplo do código de teste do tamanho máximo da cache.}
+   \label{fig:cache_max}
+\end{figure}
+
+
+\subsubsection{Deserializers}
+Sendo que foi alterado o comportamento original dos deserializers usados pelo \textit{Spring Boot}, as classes onde essa alteração foi feita tiveram de ser testadas. Desta forma, criaram-se testes unitários para as classes \textbf{\textit{AirQualityDeserializer}}, \textbf{\textit{PollutantDeserializer}} e \textbf{\textit{PollutantConcentrationDeserializer}}. 
+Para testar o comportamento de cada uma destas, foi feito um teste similar em cada uma, em que foi dado uma \textit{string json} no mesmo formato das respostas obtidas nos \textit{requests} ao serviço externo e verificou-se se o objeto da respetiva classe criado era o suposto dado os parâmetros da \textit{string json}. 
+Um exemplo dum destes testes pode ser encontrado na figura \ref{fig:serializer_test}, onde é criada uma \textit{string} com a formatação da concentração dum poluente que usualmente é recebida do serviço externo, sendo posteriormente esta "fornecida" aod respetivo \textit{deserializer} e por fim é verificado se o objeto retornado por este é o suposto.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/serializer_test}
+   \caption{Exemplo do código de teste do deserializer \textbf{\textit{PollutantConcentrationDeserializer}}.}
+   \label{fig:serializer_test}
+\end{figure}

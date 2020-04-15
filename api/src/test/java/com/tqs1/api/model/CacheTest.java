@@ -115,9 +115,11 @@ class CacheTest {
     @Test
     void testSizeMoreThanMax() {
         cache.addResponse(
-                new Cache.ParametersEncapsulation(BreezometerEndpoints.HISTORICAL_HOURLY, 3, 3, 3), "response3");
+                new Cache.ParametersEncapsulation(BreezometerEndpoints.HISTORICAL_HOURLY, 3, 3, 3),
+                "response3");
         cache.addResponse(
-                new Cache.ParametersEncapsulation(BreezometerEndpoints.HISTORICAL_HOURLY, 4, 4, 4), "response4");
+                new Cache.ParametersEncapsulation(BreezometerEndpoints.HISTORICAL_HOURLY, 4, 4, 4),
+                "response4");
 
         assertThat(cache.getSize(), is(3));
     }
