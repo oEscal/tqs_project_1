@@ -137,3 +137,32 @@ Na imagem da figura \ref{fig:sonar} é possivel encontrar um \textit{print} da \
    \caption{Evolução dos problemas do código da \textit{API} ao longo do desenvolvimento.}
    \label{fig:sonar_activity}
 \end{figure}
+
+
+\section{Continuous Integration Pipeline}
+Para controlar de forma mais facilitada e automática a qualidade do código criado, foram usadas, desde o inicio do desenvolvimento do projeto, várias \textit{pipelines} de \textit{CI} diretamente no repositório no \textit{GitHub}, tendo-se dado uso das \textit{GitHub Actions}.
+
+Deste modo, foram usadas os seguintes \textit{workflows}:
+\begin{itemize}
+   \item \textbf{\textit{SpotBugs Workflow}}: \textit{workflow} usado para analisar o código \textit{java} da \textit{API}, de forma a encontrar possíveis \textit{bugs} que poderiam passar desprevinidos durante o desenvolvimento. Para isso, ele faz uso da ferramenta \textit{SpotBugs} própria para esse efeito.
+   \item \textbf{\textit{Tests workflow}}: \textit{workflow} usado para executar todos os testes da \textit{API} criados e verificar se todos passam.
+   \item \textbf{\textit{Python lint}}: \textit{workflow} usado para fazer a verificação do \textit{lint} do código \textit{python} usado para criar a interface \textit{web}. Para isso, ele faz uso da ferramenta \textit{Flake8}.
+\end{itemize}
+
+Sendo assim, sempre que foi feito uma nova submissão de código para o repositório, todas estas \textit{pipelines} foram executadas de forma a verificar a qualidade do código. Na figura \ref{fig:commits} encontra-se um \textit{screenshot} da página dos \textit{commits} do repositório e os \textit{workflows} falharam ou não \footnote{o certo a verde significa que todos os \textit{worflows} foram executados com sucesso e a cruz vermelha o contrário}.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/commits}
+   \caption{\textit{Commits} do código no repositório no \textit{GitHub}.}
+   \label{fig:commits}
+\end{figure}
+
+É também possível verificar os \textit{logs} dos possíveis problemas que tenham sido encontrados na execução dum \textit{workflow}, o que ajuda a dar \textit{debug} e a corrigi-los (figura \ref{fig:logs}).
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/logs}
+   \caption{\textit{Logs} dos \textit{workflows}.}
+   \label{fig:logs}
+\end{figure}
