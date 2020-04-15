@@ -6,6 +6,8 @@ import com.tqs1.api.model.MessageErrorDetails;
 import com.tqs1.api.service.BreezometerEndpoints;
 import com.tqs1.api.service.BreezometerService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +34,9 @@ public class ConditionsController {
     private BreezometerService service;
 
     @GetMapping("/current")
-    public Message currentConditions(@RequestParam Double lat, @RequestParam Double lon)
+    @ApiOperation(value="Get the current air quality conditions")
+    public Message currentConditions(@ApiParam(value = "Latitude coordinate", required = true) @RequestParam Double lat,
+                                     @ApiParam(value = "Longitude coordinate", required = true) @RequestParam Double lon)
             throws IOException, URISyntaxException, ParseException {
 
         // coordinates limit verification
@@ -44,8 +48,10 @@ public class ConditionsController {
     }
 
     @GetMapping("/forecast")
-    public Message forecastConditions(@RequestParam Double lat, @RequestParam Double lon,
-                                                        @RequestParam Integer hours)
+    @ApiOperation(value="Get the future air quality conditions for some number of hours")
+    public Message forecastConditions(@ApiParam(value = "Latitude coordinate", required = true) @RequestParam Double lat,
+                                      @ApiParam(value = "Longitude coordinate", required = true) @RequestParam Double lon,
+                                      @ApiParam(value = "Number of hours wanted", required = true) @RequestParam Integer hours)
             throws IOException, URISyntaxException, ParseException {
 
         // coordinates limit verification
@@ -64,8 +70,10 @@ public class ConditionsController {
     }
 
     @GetMapping("/history")
-    public Message historyConditions(@RequestParam Double lat, @RequestParam Double lon,
-                                                       @RequestParam Integer hours)
+    @ApiOperation(value="Get the past air quality conditions for some number of hours")
+    public Message historyConditions(@ApiParam(value = "Latitude coordinate", required = true) @RequestParam Double lat,
+                                     @ApiParam(value = "Longitude coordinate", required = true) @RequestParam Double lon,
+                                     @ApiParam(value = "Number of hours wanted", required = true) @RequestParam Integer hours)
             throws IOException, URISyntaxException, ParseException {
 
         // coordinates limit verification
@@ -84,6 +92,7 @@ public class ConditionsController {
     }
 
     @GetMapping("/cache")
+    @ApiOperation(value="Get cache current statistics")
     public Cache cacheStatistics() {
         return cache;
     }
