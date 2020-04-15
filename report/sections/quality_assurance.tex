@@ -93,3 +93,21 @@ Na figura \ref{fig:controller_test} é demonstrado um dos testes feitos, neste c
 
 
 \section{Testes funcionais}
+De modo a criar os testes funcionais da interface criada, foi usada a ferramenta aconselhada durante as aulas da disciplina: \textit{Selenium IDE}. Através desta, é possível fazer facilmente a gravação das ações feitas numa determinada página a ser testada e exportar os resultados sob a forma duma classe de testes em \textit{JUnit}. Na figura \ref{fig:selenium_ide}, está um exemplo dum teste simples criado usando esta interface.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/selenium_ide}
+   \caption{Exemplo dum teste criado no \textit{Selenium IDE}.}
+   \label{fig:selenium_ide}
+\end{figure}
+
+Quanto aos testes criados, foi criado um novo projeto em \textit{Maven}, onde foram criados cada um dos testes. Estes encontram-se divididos por 3 classes: 
+\begin{itemize}
+   \item \textbf{\textit{ChooseTypeTests}}: testes para verificar se quando escolhido um tipo de pedido que não o \textit{current}, aparecia o \textit{input} \textit{hours} e desaparecia quando escolhido de novo o tipo \textit{current}, já que é só necessário especificar o número de horas para esses pedidos.
+   \item \textbf{\textit{MessagesTests}}: testes para verificar se quando feito um pedido com sucesso,aparecia uma mensagem de sucesso numa caixa verde e quando feito um pedido incorreto, aparecia uma mensagem de erro numa caixa vermelha, sendo que as duas nunca poderiam aparecer em conjunto.
+   \item \textbf{\textit{GetDataTests}}: testes para verificar se quando feito um pedido com sucesso dum determinado tipo, o titulo e o número de resultados obtidos era o correto.
+\end{itemize}
+
+Apesar do \textit{Selenium IDE} exportar o código dos testes, todo este código foi reformulado de forma a funcionar com \textit{JUnit 5}. Também foi feito algum refactor de forma a possuir só 3 classes separadas pelo tipo de testes e de maneira a evitar algumas repetições desnecessárias de código. Para testes onde foi necessário verificar se havia um determinado número específico de elementos na página, foi também necessário alterar o código obtido, já que aparentemente o \textit{Selenium IDE} só permite confirmar se um elemento está presente ou não na página e não o número de vezes que está.
+
