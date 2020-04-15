@@ -111,3 +111,29 @@ Quanto aos testes criados, foi criado um novo projeto em \textit{Maven}, onde fo
 
 Apesar do \textit{Selenium IDE} exportar o código dos testes, todo este código foi reformulado de forma a funcionar com \textit{JUnit 5}. Também foi feito algum refactor de forma a possuir só 3 classes separadas pelo tipo de testes e de maneira a evitar algumas repetições desnecessárias de código. Para testes onde foi necessário verificar se havia um determinado número específico de elementos na página, foi também necessário alterar o código obtido, já que aparentemente o \textit{Selenium IDE} só permite confirmar se um elemento está presente ou não na página e não o número de vezes que está.
 
+
+\section{Análise de código estático}
+Tal como pedido no guião do trabalho, era recomendada a utilização duma ferramenta de análise da qualidade do código. A que foi usada neste caso foi o \textit{Sonar Qube}, já que permite análise local de código (o repositório, até à data limite de entrega, foi privado) e pareceu bastante completa ao autor.
+
+Esta ferramenta foi usada logo desde os estágios iniciais do projeto, de forma a evitar chegar a um estado avançado com uma grande quantidade de \textit{bugs} ou \textit{code smells}. Sendo assim, desde o inicio, qualquer nova versão do código da \textit{API} foi verificado no \textit{Sonar Qube}, de maneira não haverem quaisquer tipos de \textit{bugs} e \textit{code smells}, pelo que caso algum aparecesse em código feito recentemente, ser imediatamente corrigido.
+
+Apesar de não ter tido uma grande quantidade deste tipo de problemas, houve um que se destacou pela sua persistência no inicio: criação de variáveis e métodos em \textit{Snake case} e não \textit{CamelCase}. Isto deve-se principalmente ao facto do autor usar \textit{python} como linguagem de programação de referência no dia a dia e não estar completamente habituado a usar \textit{java}. Ainda que este tipo de problemas fosse classificado como \textit{Minor}, é algo importante a ser usado quando se programa nesta linguagem, já que é o \textit{standard} e acaba por tornar o código de fácil leitura a programadores que não o autor inicial.
+
+Também foi usada esta ferramenta, em conjunto com o \textit{JaCoCo}, de maneira a obter uma análise da cobertura dos testes criados. Desde o inicio que foi usado um \textit{Quality Gate} igual ao usado por default, mas com um mínimo de cobertura de código de 70\%, já que para desenvolvimento parece ser suficiente. Aquando da conclusão da \textit{API}, foi obtida uma cobertura de 90.3\%, o que parece ser ótimo.
+
+Na imagem da figura \ref{fig:sonar} é possivel encontrar um \textit{print} da \textit{dashboard} deste projeto no 
+\textit{Sonar Qube}, onde se pode confirmar que foram reduzidos a zero o número de \textit{bugs}, vulnerabilidades, \textit{Security Hotspots} e de \textit{Code Smells}, bem como a percentagem de \textit{Coverage} é superior a 90\%. Já na figura \ref{fig:sonar_activity}, é possível confirmar que a quantidade de problemas no código manteve-se sempre baixa, sendo que no inicio foram o mais rápidamente eliminados os erros existentes.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/sonar}
+   \caption{\textit{Dashboard} do projeto no \textit{SonarQube}.}
+   \label{fig:sonar}
+\end{figure}
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[width=0.90\textwidth]{images/sonar_activity}
+   \caption{Evolução dos problemas do código da \textit{API} ao longo do desenvolvimento.}
+   \label{fig:sonar_activity}
+\end{figure}
